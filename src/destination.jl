@@ -41,7 +41,36 @@ end
 
 SpeedyWeather.finalize!(::Destination, args...) = nothing
 
+# unpack tuple
+SpeedyWeather.add!(to, destinations::NTuple{N, <:Destination}) where N = 
+	add!(to, destinations...)
+
+# use destination name as key
+SpeedyWeather.add!(model::AbstractModel, destinations::Destination...) = 
+	add!(model.callbacks, destinations...)
+SpeedyWeather.add!(callbacks::SpeedyWeather.CALLBACK_DICT, destinations::Destination...) = 
+	add!(callbacks, ((d.name => d) for d in destinations)...)
+
+function shortstring(d::Destination)
+	fmt = Printf.Format("%$(MAX_NAME_LENGTH)s")
+	name = Printf.format(fmt, string(d.name))
+	lon = @sprintf("%6.1f˚E", d.lonlat[1])
+	lat = @sprintf("%5.1f˚N", d.lonlat[2])
+	return "Destination($name, $lon, $lat, reached=$(d.reached))"
+end
+
+function Base.show(io::IO, ds::NTuple{N, <:Destination}) where N 
+	for d in ds[1:end-1]
+		println(io, shortstring(d))
+	end
+	for d in ds[end:end]
+		print(io, shortstring(d))
+	end
+end
+
 const NCHILDREN = 10
 const NF = Float32
 
-const Children = [Destination{NF}(lonlat=CITIES[i], name=NAMES[i]) for i in 1:NCHILDREN]
+function children(n=NCHILDREN, ::Type{T}=NF) where T
+	return Tuple(Destination{T}(lonlat=CITIES[i], name=NAMES[i]) for i in 1:n)
+end

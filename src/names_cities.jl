@@ -11,6 +11,8 @@ const NAMES = [
   :Santiago, :Sophia, :Tariq, :Tomas, :Uma, :Valentina, :Viktor, :Yasmin, :Yuki, :Zara,
 ]
 
+const MAX_NAME_LENGTH = maximum(length.(string.(NAMES)))
+
 const CITIES = [
     (-74.0060, 40.7128),    # New York, USA
     (-0.1278, 51.5074),     # London, UK
@@ -30,12 +32,12 @@ const CITIES = [
     (-46.6333, -23.5505),   # São Paulo, Brazil
     (99.0765, 19.9136),     # Chiang Mai, Thailand
     (77.2090, 28.6139),     # New Delhi, India
-    (3.1390, 101.6869),     # Kuala Lumpur, Malaysia
+    (101.6869, 3.1390),     # Kuala Lumpur, Malaysia
     (144.9631, -37.8136),   # Melbourne, Australia
     (106.6456, -6.2088),    # Jakarta, Indonesia
     (-79.3832, 43.6532),    # Toronto, Canada
     (74.3436, 31.5497),     # Lahore, Pakistan
-    (37.7749, -122.4194),   # San Francisco, USA
+    (-122.4194, 37.7749),   # San Francisco, USA
     (4.9041, 52.3676),      # Amsterdam, Netherlands
     (104.9903, 15.8700),    # Bangkok, Thailand
     (38.7167, 9.25),        # Addis Ababa, Ethiopia
@@ -44,7 +46,7 @@ const CITIES = [
     (18.4241, -33.9249),    # Cape Town, South Africa
     (88.3639, 22.5726),     # Kolkata, India
     (106.6957, 10.762622),  # Ho Chi Minh City, Vietnam
-    (36.7783, -119.4179),   # Fresno, USA
+    (-119.4179, 36.7783),   # Fresno, USA
     (37.6173, 55.7558),     # Moscow, Russia
     (30.5087, 50.4501),     # Kiev, Ukraine
     (72.8777, 19.0760),     # Mumbai, India
@@ -89,7 +91,7 @@ const CITIES = [
 ]
 
 using Random
-const SEED = 1234
+const SEED = 1234           # change this for a new challenge
 const RNG = Random.Xoshiro(SEED)
 
 shuffle!(RNG, NAMES)
