@@ -8,8 +8,8 @@ export Destination
     radius::NF = DESTINATION_RADIUS
     reached::Bool = false
     particle::Int = 0
-    closest::NF = Inf
-    distance::NF = 0
+    closest_distance::NF = Inf
+	closest_particle::Int = 0
 end
 
 Destination(SG::SpectralGrid; kwargs...) = Destination{SG.NF}(; kwargs...)
@@ -26,15 +26,22 @@ function SpeedyWeather.callback!(
 
 	for (i, p) in enumerate(progn.particles)
 
-		distance = spherical_distance((p.lon, p.lat), destination.lonlat, radius=model.planet.radius)
-		destination.closest = min(destination.closest, distance)
-
-		if !destination.reached && distance <= destination.radius
-			destination.reached = true
-			s1 = "Destination $(destination.name) at $(destination.lonlat[2])˚N, $(destination.lonlat[1])˚E"
-			s2 = " reached by particle $i on $(progn.clock.time)"
-			@info s1*s2
-			progn.particles[i] = deactivate(p)
+		if !destination.reached
+			distance = spherical_distance((p.lon, p.lat), destination.lonlat, radius=model.planet.radius)
+		
+			if distance < destination.closest_distance
+				destination.closest_distance = distance
+				destination.closest_particle = i
+			end
+			
+			if distance <= destination.radius
+				destination.reached = true
+				destination.particle = i
+				s1 = "Destination $(destination.name) at $(destination.lonlat[2])˚N, $(destination.lonlat[1])˚E"
+				s2 = " reached by particle $i on $(progn.clock.time)"
+				@info s1*s2
+				progn.particles[i] = deactivate(p)
+			end
 		end
 	end
 end
@@ -51,11 +58,17 @@ SpeedyWeather.add!(model::AbstractModel, destinations::Destination...) =
 SpeedyWeather.add!(callbacks::SpeedyWeather.CALLBACK_DICT, destinations::Destination...) = 
 	add!(callbacks, ((d.name => d) for d in destinations)...)
 
-function shortstring(d::Destination)
+
+function destination_format(d::Destination)
 	fmt = Printf.Format("%$(MAX_NAME_LENGTH)s")
 	name = Printf.format(fmt, string(d.name))
 	lon = @sprintf("%6.1f˚E", d.lonlat[1])
 	lat = @sprintf("%5.1f˚N", d.lonlat[2])
+	return name, lon, lat
+end
+
+function shortstring(d::Destination)
+	name, lon, lat = destination_format(d)
 	return "Destination($name, $lon, $lat, reached=$(d.reached))"
 end
 
