@@ -28,3 +28,4 @@ LocalPreferences.toml
 JuliaLocalPreferences.toml
 
 .DS_Store
+*.nc
