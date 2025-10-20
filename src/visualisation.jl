@@ -32,8 +32,8 @@ function SpeedyWeather.globe(
 
     # background image
     if background
-        bg = meshimage!(ax, -180..180, -90..90, rotr90(GeoMakie.earth());
-            npoints = 100, z_level = -100_000)
+        bg = meshimage!(ax, -180..180, -90..90, rotr90(GeoMakie.earth() .* 0.5);
+            npoints = 100, z_level = -200_000)
         interactive && (bg.transformation.transform_func[] = transf)
     end
 
@@ -53,6 +53,11 @@ function SpeedyWeather.globe(
         for i in eachindex(particles)
             pl = lines!(ax, plon[i, :], plat[i, :], linewidth=2)
             interactive && (pl.transformation.transform_func[] = transf)
+
+            pcc = scatter!(ax, plon[i, 1], plat[i, 1]; color=:white, marker=:circle, markersize=20)
+            interactive && (pcc.transformation.transform_func[] = transf)
+            pc = scatter!(ax, plon[i, 1], plat[i, 1]; color=:black, marker=Char(48+i), markersize=10)
+            interactive && (pc.transformation.transform_func[] = transf)
         end
     end
 
@@ -61,10 +66,14 @@ function SpeedyWeather.globe(
     lats = [d.lonlat[2] for d in destinations]
 
     colors = [d.reached ? 0 : 1 for d in destinations]
-    c1 = scatter!(ax, lons, lats, zero(lons); marker=:hexagon, color=:black, markersize=22)
-    c2 = scatter!(ax, lons, lats, zero(lons); marker=:hexagon, color=colors, markersize=20)
+    colors2 = [d.reached ? 1 : 0 for d in destinations]
+    markers = [only(string(d.name)[1]) for d in destinations]
+    c1 = scatter!(ax, lons, lats; marker=:hexagon, color=:black, markersize=22)
+    c2 = scatter!(ax, lons, lats; marker=:hexagon, color=colors, markersize=20)
+    c3 = scatter!(ax, lons, lats; marker=markers, color=colors2, markersize=10)
     interactive && (c1.transformation.transform_func[] = transf)
     interactive && (c2.transformation.transform_func[] = transf)
+    interactive && (c3.transformation.transform_func[] = transf)
 
     # add names
     if names
