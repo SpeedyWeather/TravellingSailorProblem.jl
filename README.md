@@ -98,3 +98,28 @@ to distinguish them, destinations reached are in dark purple, destinations not r
 
 https://github.com/user-attachments/assets/e6979621-6304-4d92-afd6-0fe298d7862b
 
+## Installation
+
+TravellingSailorProblem.jl is not yet a registered Julia packge so from the Julia REPL do
+
+```julia
+julia> ] add https://github.com/SpeedyWeather/TravellingSailorProblem.jl#main
+```
+
+where `]` opens Julia's package manager interactively, and `#main` to install the current main branch.
+Alternatively you can do
+
+```julia
+using Pkg
+Pkg.add("https://github.com/SpeedyWeather/TravellingSailorProblem.jl", rev="main")
+```
+
+SpeedyWeather is automatically installed as a dependency but to have it explicitly available just
+do `add SpeedyWeather`. For visualisation you have to choose a backend for Makie, e.g. do
+
+```julia
+julia> ] add GLMakie
+```
+
+alternatively you can use CairoMakie but that won't allow the interactive visualisation.
+
