@@ -121,5 +121,5 @@ do `add SpeedyWeather`. For visualisation you have to choose a backend for Makie
 julia> ] add GLMakie
 ```
 
-alternatively you can use CairoMakie but that won't allow the interactive visualisation.
+alternatively you can use WGLMakie.  Don't use CairoMakie, as it will not render the 3D properties correctly.
 
