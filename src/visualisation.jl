@@ -28,6 +28,8 @@ function SpeedyWeather.globe(
     size=(800, 800),
 ) where N
 
+    Makie.set_theme!(Attributes(; palette = (; color = Makie.to_colormap(:tab20), patchcolor = Makie.to_colormap(:tab20))))
+
     fig = Figure(size=size);
 
     if interactive
