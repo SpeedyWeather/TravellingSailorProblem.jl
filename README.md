@@ -4,8 +4,7 @@
 
 Otherwise something like this
 
-<img width="627" height="619" alt="image" src="https://github.com/user-attachments/assets/43f76ac6-c690-422d-9e2d-76d5b590e655" />
-
+<img width="795" height="791" alt="image" src="https://github.com/user-attachments/assets/bcad9d81-06d9-4b70-bf0a-7a0d1661077e" />
 
 ## Example
 
