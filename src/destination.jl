@@ -3,7 +3,7 @@ const DESTINATION_RADIUS = 100_000 # in meters
 export Destination
 
 @kwdef mutable struct Destination{NF} <: SpeedyWeather.AbstractCallback
-    lonlat::NTuple{2, NF} = rand(CITIES)
+    lonlat::NTuple{2, NF} = rand(PLACES)
     name::Symbol = rand(NAMES)
     radius::NF = DESTINATION_RADIUS
     reached::Bool = false
@@ -85,5 +85,5 @@ const NCHILDREN = 10
 const NF = Float32
 
 function children(n=NCHILDREN, ::Type{T}=NF) where T
-	return Tuple(Destination{T}(lonlat=CITIES[i], name=NAMES[i]) for i in 1:n)
+	return Tuple(Destination{T}(lonlat=PLACES[i], name=NAMES[i]) for i in 1:n)
 end
