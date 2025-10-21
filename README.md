@@ -97,8 +97,7 @@ globe(children, particle_tracker)
 and an interactive window will open where you can scroll and zoom. Particle trajectories have different colours
 to distinguish them, destinations reached are in dark purple, destinations not reached in yellow.
 
-
-https://github.com/user-attachments/assets/e6979621-6304-4d92-afd6-0fe298d7862b
+https://github.com/user-attachments/assets/8a3ad5e8-2316-46c6-be5f-ffe851305d6c
 
 ## Installation
 
