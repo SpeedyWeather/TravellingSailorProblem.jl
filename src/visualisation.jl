@@ -1,10 +1,21 @@
 using GeoMakie, FileIO
+import Proj, GeometryOps, GeoInterface, GeoFormatTypes
 
 mkpath("assets")  # create assets directory if it doesn't exist
 
 if !isfile("assets/bluemarble.png")
     # @info "Downloading bluemarble background image."
     download("https://eoimages.gsfc.nasa.gov/images/imagerecords/76000/76487/world.200406.3x5400x2700.png", "assets/bluemarble.png")
+end
+
+function bad_spherical_cap(point, radius; npoints = 100)
+    points = [radius .* reverse(sincos(t)) for t in LinRange(0, 2pi, npoints)]
+    poly = GeoInterface.Polygon([GeoInterface.LinearRing(points)])
+    return GeometryOps.reproject(
+        poly;
+        source_crs = GeoFormatTypes.ProjString("+proj=ortho +lon_0=$(GeoInterface.x(point)) +lat_0=$(GeoInterface.y(point))"),
+        target_crs = GeoFormatTypes.EPSG(4326)
+    )
 end
 
 # make commutative
@@ -84,7 +95,8 @@ function SpeedyWeather.globe(
     scatter!(ax, lons, lats, z; marker=markers, color=colors2, colorrange=(0, 1), markersize=10)
 
     r = DEFAULT_RADIUS * 2π / 360   # meters per degree
-    circles = [Circle(Point2f(lon, lat), radius/r) for (lon, lat, radius) in zip(lons, lats, radii)]
+    # circles = [Circle(Point2f(lon, lat), radius/r) for (lon, lat, radius) in zip(lons, lats, radii)]
+    circles = [bad_spherical_cap(Point2f(lon, lat), radius) for (lon, lat, radius) in zip(lons, lats, radii)]
     poly!(ax, circles, color=:purple, alpha=0.5, zlevel=10_000)
 
     # dummy scatter for legend
