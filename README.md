@@ -2,7 +2,10 @@
 
 [Travelling Salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) might be NP-hard, this is NP-very hard!
 
-Otherwise something like this
+> Santa came to me in a gale of despair — his reindeer, mutinous and idle. 'Drake,' he said, 'how shall I deliver all the gifts?'
+> I told him, 'Trim the sails and trust the wind, for the world has been circled before.'
+
+_Sir Francis Drake_
 
 <img width="795" height="791" alt="image" src="https://github.com/user-attachments/assets/e0e24d58-3ece-457c-9e1b-cb44549de808" />
 
