@@ -2,7 +2,7 @@ using NCDatasets
 const DEFAULT_RADIUS = SpeedyWeather.DEFAULT_RADIUS
 
 const POINTS_PER_KM_REACHED = 1     # points per km for reached destinations
-const POINTS_PER_KM_MISSED = 10      # points per km for not reached destinations
+const POINTS_PER_KM_MISSED = 10     # points per km for not reached destinations
 
 mutable struct Evaluation
     ndestinations::Int
@@ -60,9 +60,10 @@ function evaluate(
         # sum up total points
         total_points += points
         name, lon_str, lat_str = destination_format(destination)
-        pa_str = @sprintf("%4d", from_particle)
+        pa_str = @sprintf("%2d", from_particle)
         po_str = @sprintf("%6d", points)
-        println("Destination $name ($lon_str, $lat_str) from particle $pa_str: $po_str points")
+        reached_or_missed = destination.reached ? "reached by" : " missed by"
+        println("Destination $name ($lon_str, $lat_str) $reached_or_missed particle $pa_str: $po_str points")
     end
 
     return Evaluation(length(destinations), nreached, round(Int,total_points))
