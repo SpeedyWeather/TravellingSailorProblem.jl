@@ -10,6 +10,7 @@ export Destination
     particle::Int = 0
     closest_distance::NF = Inf
 	closest_particle::Int = 0
+	verbose::Bool = isinteractive()
 end
 
 Destination(SG::SpectralGrid; kwargs...) = Destination{SG.NF}(; kwargs...)
@@ -37,10 +38,12 @@ function SpeedyWeather.callback!(
 			if distance <= destination.radius
 				destination.reached = true
 				destination.particle = i
-				s1 = "Destination $(destination.name) at $(destination.lonlat[2])˚N, $(destination.lonlat[1])˚E"
-				s2 = " reached by particle $i on $(progn.clock.time)"
-				@info s1*s2
 				progn.particles[i] = deactivate(p)
+				if destination.verbose
+					s1 = "Destination $(destination.name) at $(destination.lonlat[2])˚N, $(destination.lonlat[1])˚E"
+					s2 = " reached by particle $i on $(progn.clock.time)"
+					@info s1*s2
+				end
 			end
 		end
 	end
@@ -84,6 +87,6 @@ end
 const NCHILDREN = 10
 const NF = Float32
 
-function children(n=NCHILDREN, ::Type{T}=NF) where T
-	return Tuple(Destination{T}(lonlat=PLACES[i], name=NAMES[i]) for i in 1:n)
+function children(n=NCHILDREN, ::Type{T}=NF; kwargs...) where T
+	return Tuple(Destination{T}(lonlat=PLACES[i], name=NAMES[i]; kwargs...) for i in 1:n)
 end
