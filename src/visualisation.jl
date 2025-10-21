@@ -94,10 +94,8 @@ function SpeedyWeather.globe(
         colorrange=(0, 1), markersize=20)
     scatter!(ax, lons, lats, z; marker=markers, color=colors2, colorrange=(0, 1), markersize=10)
 
-    r = DEFAULT_RADIUS * 2π / 360   # meters per degree
-    # circles = [Circle(Point2f(lon, lat), radius/r) for (lon, lat, radius) in zip(lons, lats, radii)]
     circles = [bad_spherical_cap(Point2f(lon, lat), radius) for (lon, lat, radius) in zip(lons, lats, radii)]
-    poly!(ax, circles, color=:purple, alpha=0.5, zlevel=10_000)
+    poly!(ax, circles, color=colors, colorrange=(0,1), alpha=0.3, zlevel=10_000)
 
     # dummy scatter for legend
     scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle start")
