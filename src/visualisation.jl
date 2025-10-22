@@ -1,11 +1,12 @@
 using GeoMakie, FileIO
 import Proj, GeometryOps, GeoInterface, GeoFormatTypes
 
-mkpath("assets")  # create assets directory if it doesn't exist
+const ASSETS_PATH = joinpath(dirname(@__DIR__), "assets")
+mkpath(ASSETS_PATH)  # create assets directory if it doesn't exist
 
-if !isfile("assets/bluemarble.png")
+if !isfile(joinpath(ASSETS_PATH, "bluemarble.png"))
     # @info "Downloading bluemarble background image."
-    download("https://eoimages.gsfc.nasa.gov/images/imagerecords/76000/76487/world.200406.3x5400x2700.png", "assets/bluemarble.png")
+    download("https://eoimages.gsfc.nasa.gov/images/imagerecords/76000/76487/world.200406.3x5400x2700.png", joinpath(ASSETS_PATH, "bluemarble.png"))
 end
 
 function bad_spherical_cap(point, radius; npoints = 100)
@@ -52,7 +53,7 @@ function SpeedyWeather.globe(
 
     # background image
     if background
-        earth = isfile("assets/bluemarble.png") ? load("assets/bluemarble.png") : GeoMakie.earth()
+        earth = isfile(joinpath(ASSETS_PATH, "bluemarble.png")) ? load(joinpath(ASSETS_PATH, "bluemarble.png")) : GeoMakie.earth()
         grey_earth = rotr90(Gray.(earth)) .* 0.5 .+ 0.2
         meshimage!(ax, -180..180, -90..90, grey_earth; npoints = 100)
     end
