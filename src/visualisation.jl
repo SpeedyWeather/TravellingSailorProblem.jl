@@ -1,7 +1,7 @@
 using GeoMakie, FileIO
 import Proj, GeometryOps, GeoInterface, GeoFormatTypes
 
-const ASSETS_PATH = joinpath(@__DIR__, "../assets")
+const ASSETS_PATH = joinpath(dirname(@__DIR__), "assets")
 mkpath(ASSETS_PATH)  # create assets directory if it doesn't exist
 
 if !isfile(joinpath(ASSETS_PATH, "bluemarble.png"))
