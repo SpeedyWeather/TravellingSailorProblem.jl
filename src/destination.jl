@@ -40,7 +40,7 @@ function SpeedyWeather.callback!(
 				destination.particle = i
 				progn.particles[i] = deactivate(p)
 				if destination.verbose
-					s1 = "Destination $(destination.name) at $(destination.lonlat[2])˚N, $(destination.lonlat[1])˚E"
+					s1 = "\nDestination $(destination.name) at $(destination.lonlat[2])˚N, $(destination.lonlat[1])˚E"
 					s2 = " reached by particle $i on $(progn.clock.time)"
 					@info s1*s2
 				end

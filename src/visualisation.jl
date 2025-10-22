@@ -18,6 +18,8 @@ function bad_spherical_cap(point, radius; npoints = 100)
     )
 end
 
+export globe
+
 # make commutative
 function SpeedyWeather.globe(
     particle_tracker::SpeedyWeather.ParticleTracker,
@@ -33,6 +35,9 @@ function SpeedyWeather.globe(
     background::Bool = true,
     coastlines::Bool = true,
     interactive::Bool = true,
+    shadows::Bool = true,
+    track_labels::Bool = true,
+    track_numbers::Bool = true,
     legend::Bool = true,
     altitude_tracks = 200_000,
     altitude_destinations = 200_000,
@@ -92,11 +97,13 @@ function SpeedyWeather.globe(
 
         for i in eachindex(particles)
             lines!(ax, plon[i, :], plat[i, :], pz[i, :] .* 0.8, color=Cycled(i), linewidth=2)
-            lines!(ax, plon[i, :], plat[i, :], pz[i, :] .* 0.1, color=:black, alpha=0.5, linewidth=2)
-            scatter!(ax, plon[i, 1], plat[i, 1], pz[i, 1]; color=:black, marker=:circle, markersize=22)
-            scatter!(ax, plon[i, 1], plat[i, 1], pz[i, 1] .* 0.3; color=:black, marker=:circle, alpha=0.5, markersize=22)
-            scatter!(ax, plon[i, 1], plat[i, 1], pz[i, 1]; color=:white, marker=:circle, markersize=20)
-            scatter!(ax, plon[i, 1], plat[i, 1], pz[i, 1]; color=:black, marker=Char(48+mod(i, 10)), markersize=10)
+            shadows && lines!(ax, plon[i, :], plat[i, :], pz[i, :] .* 0.1, color=:black, alpha=0.5, linewidth=2)
+            if track_labels
+                scatter!(ax, plon[i, end], plat[i, end], pz[i, end]; color=:black, marker=:circle, markersize=22)
+                shadows && scatter!(ax, plon[i, end], plat[i, end], pz[i, end] .* 0.3; color=:black, marker=:circle, alpha=0.5, markersize=22)
+                scatter!(ax, plon[i, end], plat[i, end], pz[i, end]; color=:white, marker=:circle, markersize=20)
+                track_numbers && scatter!(ax, plon[i, end], plat[i, end], pz[i, end]; color=:black, marker=Char(48+mod(i, 10)), markersize=10)
+            end
         end
     end
 
@@ -114,8 +121,10 @@ function SpeedyWeather.globe(
         colorrange=(0, 1), markersize=20)
     scatter!(ax, lons, lats, z; marker=markers, color=colors2, colorrange=(0, 1), markersize=10)
 
-    circles = [bad_spherical_cap(Point2f(lon, lat), radius) for (lon, lat, radius) in zip(lons, lats, radii)]
-    poly!(ax, circles, color=colors, colorrange=(0,1), alpha=0.3, zlevel=10_000)
+    if shadows
+        circles = [bad_spherical_cap(Point2f(lon, lat), radius) for (lon, lat, radius) in zip(lons, lats, radii)]
+        poly!(ax, circles, color=colors, colorrange=(0,1), alpha=0.3, zlevel=10_000)
+    end
 
     # dummy scatter for legend
     scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle start")
