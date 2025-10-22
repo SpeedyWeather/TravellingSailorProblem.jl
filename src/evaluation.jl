@@ -35,7 +35,7 @@ function evaluate(
     total_points::Int = 0
     nreached::Int = 0
     
-    for destination in destinations
+    for (j, destination) in enumerate(destinations)
         if destination.reached
             nreached += 1
             i = destination.particle
@@ -63,7 +63,8 @@ function evaluate(
         pa_str = @sprintf("%2d", from_particle)
         po_str = @sprintf("%6d", points)
         reached_or_missed = destination.reached ? "reached by" : " missed by"
-        println("Destination $name ($lon_str, $lat_str) $reached_or_missed particle $pa_str: $po_str points")
+        dj = @sprintf("%2d", j)
+        println("Destination $dj $name ($lon_str, $lat_str) $reached_or_missed particle $pa_str: $po_str points")
     end
 
     return Evaluation(length(destinations), nreached, round(Int,total_points))
