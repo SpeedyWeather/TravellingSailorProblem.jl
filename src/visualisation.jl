@@ -33,12 +33,15 @@ function SpeedyWeather.globe(
     background::Bool = true,
     coastlines::Bool = true,
     interactive::Bool = true,
+    legend::Bool = true,
     altitude_tracks = 200_000,
     altitude_destinations = 200_000,
-    perspective = (30, 45),
+    perspective = (0, 0),
     altitude = 2e7,
-    size=(800, 800),
+    size = (800, 800),
 ) where N
+
+    perspective = perspective isa Destination ? perspective.lonlat : perspective
 
     Makie.set_theme!(Attributes(; palette = (; color = Makie.to_colormap(:tab20), patchcolor = Makie.to_colormap(:tab20))))
 
@@ -55,7 +58,7 @@ function SpeedyWeather.globe(
             alt = altitude,
         ))
 
-        # Now, we update the camera to look at Pittsburgh.
+        # Now, we update the camera
         cc = cameracontrols(ax.scene)
         cc.eyeposition[] = ecef
         cc.lookat[] = Vec3d(0,0,0)
@@ -119,7 +122,7 @@ function SpeedyWeather.globe(
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=0, colorrange=(0, 1), markersize=16, label="reached")
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=1, colorrange=(0, 1), markersize=16, label="missed")
 
-    axislegend(ax, position=:lb)
+    legend && axislegend(ax, position=:lb)
 
     fig
 end 

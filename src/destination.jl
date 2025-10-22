@@ -79,9 +79,7 @@ function Base.show(io::IO, ds::NTuple{N, <:Destination}) where N
 	for d in ds[1:end-1]
 		println(io, shortstring(d))
 	end
-	for d in ds[end:end]
-		print(io, shortstring(d))
-	end
+	print(io, shortstring(ds[end]))
 end
 
 const NCHILDREN = 10
