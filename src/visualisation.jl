@@ -36,6 +36,7 @@ function SpeedyWeather.globe(
     altitude_tracks = 200_000,
     altitude_destinations = 200_000,
     perspective = (30, 45),
+    altitude = 2e7,
     size=(800, 800),
 ) where N
 
@@ -45,6 +46,22 @@ function SpeedyWeather.globe(
 
     if interactive
         ax = GlobeAxis(fig[1, 1]; show_axis = false)
+
+        # starting perspective
+        ecef = GeoMakie.Geodesy.ECEFfromLLA(GeoMakie.wgs84)(
+            GeoMakie.Geodesy.LLA(; 
+            lon = perspective[1], 
+            lat = perspective[2], 
+            alt = altitude,
+        ))
+
+        # Now, we update the camera to look at Pittsburgh.
+        cc = cameracontrols(ax.scene)
+        cc.eyeposition[] = ecef
+        cc.lookat[] = Vec3d(0,0,0)
+        cc.upvector[] = Vec3d(0,0,1)
+        Makie.update_cam!(ax.scene, cc)
+
     else
         ax = GeoAxis(fig[1, 1],
             dest = "+proj=ortho +lon_0=$(perspective[1]) +lat_0=$(perspective[2])")
