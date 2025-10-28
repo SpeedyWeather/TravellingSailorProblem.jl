@@ -116,11 +116,8 @@ end
 
 """$(TYPEDSIGNATURES)
 Pretty-print a tuple of destinations on separate lines."""
-function Base.show(io::IO, ds::NTuple{N, <:Destination}) where N
-	for d in ds
-		println(io, shortstring(d))
-	end
-end
+Base.show(io::IO, ds::NTuple{N, <:Destination}) where N = join(io, shortstring.(ds), "\n")
+Base.show(io::IO, ds::Tuple{}) = print(io, "()")
 
 """
     NCHILDREN = 10
