@@ -15,7 +15,7 @@ function run_submission(path::String)
     include(path)   # actually run the submission, expected to bring "rain_gauge" into scope
 
     submission_dict = Dict(
-        "author" => author,
+        "author" => name,
         "description" => description,
         "nchildren" => nchildren,
         "layer" => layer,
