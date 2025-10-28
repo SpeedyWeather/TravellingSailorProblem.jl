@@ -1,6 +1,6 @@
 module TravellingSailorProblem
 
-using SpeedyWeather, Printf
+using SpeedyWeather, Printf, DocStringExtensions
 
 include("names_places.jl")
 include("destination.jl")
