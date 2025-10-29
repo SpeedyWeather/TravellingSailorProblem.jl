@@ -43,8 +43,9 @@ function SpeedyWeather.globe(
     altitude_tracks = 200_000,
     altitude_destinations = 200_000,
     perspective = (0, 0),
-    altitude = 2e7,
-    size = (800, 800),
+    altitude = 1.2e7,
+    size = (500, 500),
+    return_figure::Bool = false,
 ) where N
 
     perspective = perspective isa Destination ? perspective.lonlat : perspective
@@ -55,22 +56,6 @@ function SpeedyWeather.globe(
 
     if interactive
         ax = GlobeAxis(fig[1, 1]; show_axis = false)
-
-        # starting perspective
-        ecef = GeoMakie.Geodesy.ECEFfromLLA(GeoMakie.wgs84)(
-            GeoMakie.Geodesy.LLA(; 
-            lon = perspective[1], 
-            lat = perspective[2], 
-            alt = altitude,
-        ))
-
-        # Now, we update the camera
-        cc = cameracontrols(ax.scene)
-        cc.eyeposition[] = ecef
-        cc.lookat[] = Vec3d(0,0,0)
-        cc.upvector[] = Vec3d(0,0,1)
-        Makie.update_cam!(ax.scene, cc)
-
     else
         ax = GeoAxis(fig[1, 1],
             dest = "+proj=ortho +lon_0=$(perspective[1]) +lat_0=$(perspective[2])")
@@ -128,11 +113,36 @@ function SpeedyWeather.globe(
     end
 
     # dummy scatter for legend
-    scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle start")
+    !isnothing(particle_tracker) && scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle end")
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=0, colorrange=(0, 1), markersize=16, label="reached")
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=1, colorrange=(0, 1), markersize=16, label="missed")
 
     legend && axislegend(ax, position=:lb)
 
-    fig
-end 
+    if interactive
+
+        # starting perspective
+        ecef = GeoMakie.Geodesy.ECEFfromLLA(GeoMakie.wgs84)(
+            GeoMakie.Geodesy.LLA(; 
+            lon = perspective[1], 
+            lat = perspective[2], 
+            alt = altitude,
+        ))
+
+        # fix to enable altitude kwarg to work
+        Makie.update_state_before_display!(fig)
+
+        # Now, we update the camera
+        cc = cameracontrols(ax.scene)
+        cc.eyeposition[] = ecef
+        cc.lookat[] = Vec3d(0,0,0)
+        cc.upvector[] = Vec3d(0,0,1)
+        Makie.update_cam!(ax.scene, cc)
+    end
+
+    if return_figure
+        return fig
+    else
+        display(fig; update = false)
+    end
+end
