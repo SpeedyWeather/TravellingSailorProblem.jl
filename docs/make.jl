@@ -134,7 +134,7 @@ makedocs(;
             "Leaderboard" => "leaderboard.md",
             "List of submissions" => "submissions.md",
         ],
-        "Functions and types" => "functions_and_types.md",
+        "Functions and types" => "functions_types.md",
     ],
 )
 
