@@ -1,4 +1,4 @@
-# Submit to the travelling sailor problm
+# Submit to the TravellingSailorProblem
 
 The easiest is to have a look a existing submissions listed in
 [List of submissions](@ref) and get some inspirations from
