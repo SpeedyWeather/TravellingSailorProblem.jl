@@ -8,16 +8,14 @@ Documentation for [TravellingSailorProblem](https://github.com/SpeedyWeather/Tra
 a repository to fly particles inside a
 [SpeedyWeather.jl](https://github.com/SpeedyWeather/SpeedyWeather.jl) simulation.
 
-
 Contents
 
 - [Installation](@ref)
 - [New to Julia?](@ref)
 - [Destination](@ref)
-- [Particle advection](@ref)
-- [Visualisation](@ref)
-- [Travelling sailor problem instructions](@ref)
-- [Submit to the travelling sailor problem](@ref)
+- [Particle advection](@ref) including [Visualising trajectories](@ref)
+- [TravellingSailorProblem instructions](@ref)
+- [Submit to the TravellingSailorProblem](@ref)
 - [TravellingSailorProblem leaderboard](@ref)
 - [List of submissions](@ref)
 

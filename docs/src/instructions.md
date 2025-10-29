@@ -1,4 +1,4 @@
-# Travelling sailor problem instructions
+# TravellingSailorProblem instructions
 
 ## General workflow to run SpeedyWeather
 
