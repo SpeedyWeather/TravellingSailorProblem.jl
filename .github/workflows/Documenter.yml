@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-deploy:
-    name: Build and deploy documentation
+    name: Build and deploy
     runs-on: ubuntu-latest
     steps:
       - name: Install binary dependencies

@@ -8,4 +8,4 @@ SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
 TravellingSailorProblem = "a3415216-7039-422d-b654-bd7aa2f43b3e"
 
 [sources]
-TravelingSailorProblem = { path = ".." }
+TravellingSailorProblem = { path = ".." }
