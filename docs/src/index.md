@@ -5,8 +5,22 @@ CurrentModule = TravellingSailorProblem
 # TravellingSailorProblem
 
 Documentation for [TravellingSailorProblem](https://github.com/SpeedyWeather/TravellingSailorProblem.jl),
-a repository to fly particles inside a
-[SpeedyWeather.jl](https://github.com/SpeedyWeather/SpeedyWeather.jl) simulation.
+a repository to fly particles (like balloons) inside a
+[SpeedyWeather.jl](https://github.com/SpeedyWeather/SpeedyWeather.jl) simulation. 
+
+## The Problem
+
+The actual problem is:
+
+> Reach N destinations with particles flying with the wind as far as possible or at least get
+> as close as possible to the destinations. There will be positive points for longer distances
+> particles have flown before reaching their destination and negative points proportional to the
+> closest any particle ever came to that destination.
+
+So it's only vaguely related to the
+[Travelling Salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem)
+which is about minimizing a path you can choose. Here it's about maximising a path determined
+by the (turbulent) wind field but you can choose the starting point.
 
 Contents
 
