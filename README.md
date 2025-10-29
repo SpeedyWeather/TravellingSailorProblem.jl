@@ -112,7 +112,7 @@ Alternatively you can do
 
 ```julia
 using Pkg
-Pkg.add("https://github.com/SpeedyWeather/TravellingSailorProblem.jl", rev="main")
+Pkg.add(url="https://github.com/SpeedyWeather/TravellingSailorProblem.jl", rev="main")
 ```
 
 SpeedyWeather is automatically installed as a dependency but to have it explicitly available just

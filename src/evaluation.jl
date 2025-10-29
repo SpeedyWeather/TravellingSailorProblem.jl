@@ -63,8 +63,13 @@ function evaluate(
         pa_str = @sprintf("%2d", from_particle)
         po_str = @sprintf("%6d", points)
         reached_or_missed = destination.reached ? "reached by" : " missed by"
+        color = destination.reached ? :light_yellow : :light_blue
         dj = @sprintf("%2d", j)
-        println("Destination $dj $name ($lon_str, $lat_str) $reached_or_missed particle $pa_str: $po_str points")
+
+        s = "Destination $dj $name ($lon_str, $lat_str)"*
+            " $reached_or_missed particle $pa_str: $po_str points\n"
+
+        printstyled(s; color)
     end
 
     return Evaluation(length(destinations), nreached, round(Int,total_points))

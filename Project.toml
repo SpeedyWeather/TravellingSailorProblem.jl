@@ -5,6 +5,7 @@ version = "0.1.0"
 
 [deps]
 ColorVectorSpace = "c3611d14-8923-5661-9e6a-0046d554d3a4"
+DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
 GeoFormatTypes = "68eda718-8dee-11e9-39e7-89f7f65f511f"
 GeoInterface = "cf35fbd7-0cd7-5166-be24-54bfbe79505f"
@@ -20,6 +21,7 @@ SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
 
 [compat]
 ColorVectorSpace = "0.11.0"
+DocStringExtensions = "0.9.5"
 FileIO = "1.17.1"
 GeoFormatTypes = "0.4.4"
 GeoInterface = "1.6.0"
