@@ -12,7 +12,7 @@ sort!(submissions)  # alphabetical order
 
 # RUN SUBMISSIONS
 function run_submission(path::String)
-    include(path)   # actually run the submission, expected to bring "rain_gauge" into scope
+    include(path)
 
     submission_dict = Dict(
         "author" => name,

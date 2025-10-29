@@ -1,5 +1,5 @@
 ```@meta
-CurrentModule = RainMaker
+CurrentModule = TravellingSailorProblem
 ```
 
 # TravellingSailorProblem
