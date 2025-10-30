@@ -9,7 +9,7 @@ and deactivate that particle.
 
 ## Predefined destinations
 
-For the TravellinSailorProblem there are 26 predefined destinations. In analogy to delivering Christmas
+For the TravellingSailorProblem there are 26 predefined destinations. In analogy to delivering Christmas
 presents to children around the world these are
 
 ```@example destination
@@ -18,7 +18,9 @@ children = TravellingSailorProblem.children(26)
 ```
 
 Their names are in alphabetical order for easier identification when [Visualising destinations](@ref),
-their respective locations are the same for every user of TravellingSailorProblem. 
+their respective locations are the same for every user of TravellingSailorProblem.
+Initially they are set to `reached=false` as they haven't received any parcels (=Christmas present)
+yet. 
 You can create fewer destinations which will just pick the first N of those 26, e.g.
 
 ```@example destination
@@ -49,15 +51,28 @@ only visualise those. If you want the perspective on a particular destination yo
 using TravellingSailorProblem, GLMakie, GeoMakie
 
 children = TravellingSailorProblem.children(26)
-globe(children, perspective=children[1])
-globe(children, perspective=children[1], return_figure=true) # hide
-save("destination1.png", ans) # hide
+globe(children, perspective=children[2])
+globe(children, perspective=children[2], return_figure=true) # hide
+save("destination2.png", ans) # hide
 nothing # hide
 ```
-![](destination1.png)
-
-
-
+![](destination2.png)
 
 In this documentation that visualisation is static but if you do this in the Julia REPL
 you will get an interactive visualisation where you can rotate and zoom.
+You can also provide a perspective with coordinates, e.g. `perspective = (0, 52)` to look down onto London, UK.
+
+You can also change the altitude, typical values are between 1e6 (country level) and 2e7 (global view), e.g. to zoom onto London do
+
+```@example destination
+globe(children, perspective=(0, 52), altitude=1e6)
+globe(children, perspective=(0, 52), altitude=1e6, return_figure=true) # hide
+save("destination_london.png", ans) # hide
+nothing # hide
+```
+![](destination_london.png)
+
+By default a "shadow" is visualised below each destination to
+illustrate its radius a particle has to reach for the destination to be
+marked "reached". Unreached/missed destinations are marked in yellow but
+they turn purple if a particle gets within the radius!
