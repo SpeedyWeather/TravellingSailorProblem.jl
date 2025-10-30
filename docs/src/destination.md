@@ -45,7 +45,8 @@ nothing # hide
 
 which marks every destination (=child) with the first letter of their name. Choosing fewer children will
 only visualise those. If you want the perspective on a particular destination you can pass that on as
-`perspective = destination`, e.g. `children[1]` is a destination (`children` is a tuple of destinations)
+`perspective = destination`, e.g. `children[2]` is a destination (`children` is a tuple of destinations)
+if you have at least 2 children defined
 
 ```@example destination
 using TravellingSailorProblem, GLMakie, GeoMakie

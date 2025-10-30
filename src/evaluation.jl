@@ -8,9 +8,18 @@ mutable struct Evaluation
     ndestinations::Int
     nreached::Int
     total_points::Int
+    points::Vector{Int}
+    io::String
 end
 
-Base.show(io::IO, e::Evaluation) = print(io, "Evaluation: $(e.nreached)/$(e.ndestinations) reached, $(e.total_points) points")
+function Base.show(io::IO, e::Evaluation)
+    ds = split(e.io, '\n')
+    for d in ds
+        color = occursin("reached", d) ? :light_yellow : :light_blue
+        printstyled(io, d*"\n"; color)
+    end
+    print(io, "Evaluation: $(e.nreached)/$(e.ndestinations) reached, $(e.total_points) points")
+end
 
 export evaluate
 
@@ -34,6 +43,8 @@ function evaluate(
 
     total_points::Int = 0
     nreached::Int = 0
+    points = zeros(length(destinations))
+    io = IOBuffer()
     
     for (j, destination) in enumerate(destinations)
         if destination.reached
@@ -49,19 +60,18 @@ function evaluate(
             end
 
             # positive points for reached destinations
-            points = floor(Int, distance_flown/1e3*POINTS_PER_KM_REACHED)
+            points[j] = floor(Int, distance_flown/1e3*POINTS_PER_KM_REACHED)
             from_particle = i
         else
             # negative points for not reached destinations
-            points = -floor(Int, destination.closest_distance/1e3*POINTS_PER_KM_MISSED)
+            points[j] = -floor(Int, destination.closest_distance/1e3*POINTS_PER_KM_MISSED)
             from_particle = destination.closest_particle
         end
 
         # sum up total points
-        total_points += points
         name, lon_str, lat_str = destination_format(destination)
         pa_str = @sprintf("%2d", from_particle)
-        po_str = @sprintf("%6d", points)
+        po_str = @sprintf("%6d", points[j])
         reached_or_missed = destination.reached ? "reached by" : " missed by"
         color = destination.reached ? :light_yellow : :light_blue
         dj = @sprintf("%2d", j)
@@ -69,9 +79,11 @@ function evaluate(
         s = "Destination $dj $name ($lon_str, $lat_str)"*
             " $reached_or_missed particle $pa_str: $po_str points\n"
 
-        printstyled(s; color)
+        printstyled(io, s; color)
     end
 
-    return Evaluation(length(destinations), nreached, round(Int,total_points))
+    points_int = round.(Int, points)
+    total_points = sum(points_int)
+    s = String(take!(io))
+    return Evaluation(length(destinations), nreached, total_points, points_int, s)
 end
-
