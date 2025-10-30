@@ -2,7 +2,7 @@ using NCDatasets
 const DEFAULT_RADIUS = SpeedyWeather.DEFAULT_RADIUS
 
 const POINTS_PER_KM_REACHED = 1     # points per km for reached destinations
-const POINTS_PER_KM_MISSED = 10     # points per km for not reached destinations
+const POINTS_PER_KM_MISSED = -10    # points per km for not reached destinations
 
 mutable struct Evaluation
     ndestinations::Int
@@ -64,7 +64,7 @@ function evaluate(
             from_particle = i
         else
             # negative points for not reached destinations
-            points[j] = -floor(Int, destination.closest_distance/1e3*POINTS_PER_KM_MISSED)
+            points[j] = floor(Int, destination.closest_distance/1e3*POINTS_PER_KM_MISSED)
             from_particle = destination.closest_particle
         end
 

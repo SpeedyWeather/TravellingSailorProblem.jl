@@ -57,7 +57,7 @@ However, if a child doesn't get a Christmas present we give
 TravellingSailorProblem.POINTS_PER_KM_MISSED
 ```
 
-NEGATIVE points for every km the closest particle ever was
+(note: NEGATIVE!) points for every km the closest particle ever was
 to a child. If you live on Hawai'i and no particle doesn't
 even get near you, you would also be pretty disappointed no?
 This incetivises you to get as close as possible to a child
