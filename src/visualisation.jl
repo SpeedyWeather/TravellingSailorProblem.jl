@@ -21,7 +21,8 @@ end
 
 export globe
 
-# make commutative
+"""$(TYPEDSIGNATURES)
+Make `destinations` and `particle_tracker` arguments commutative by calling the main implementation with swapped argument order."""
 function SpeedyWeather.globe(
     particle_tracker::SpeedyWeather.ParticleTracker,
     destinations::NTuple{N, <:Destination};
@@ -30,6 +31,34 @@ function SpeedyWeather.globe(
     SpeedyWeather.globe(destinations, particle_tracker; kwargs...)
 end
 
+"""$(TYPEDSIGNATURES)
+
+Create a 3D interactive or static globe visualization of particle tracks and destinations.
+
+Displays a spherical Earth background with particle trajectories and destination markers. 
+Destinations are shown as hexagons (unreached) or filled (reached), with the first letter as a marker.
+Particle tracks are drawn as 3D lines with optional shadows and track endpoints.
+
+# Arguments
+- `destinations::NTuple{N, <:Destination}`: Tuple of destination objects to display
+- `particle_tracker::Union{Nothing, ParticleTracker}`: Optional particle trajectory data from NetCDF file
+- `background::Bool`: Show Earth background image (default: true)
+- `coastlines::Bool`: Draw coastlines (default: true)
+- `interactive::Bool`: Enable interactive 3D globe (GlobeAxis) or static orthographic view (default: true)
+- `shadows::Bool`: Draw ground shadows for tracks and destinations (default: true)
+- `track_labels::Bool`: Show particle endpoint markers and numbers (default: true)
+- `track_numbers::Bool`: Display particle numbers at endpoints (default: true)
+- `legend::Bool`: Show legend with reached/missed status (default: true)
+- `altitude_tracks`: Altitude offset for particle tracks in meters (default: 200000)
+- `altitude_destinations`: Altitude offset for destination markers in meters (default: 200000)
+- `perspective`: View center as (lon, lat) tuple or Destination object (default: (0, 0))
+- `altitude`: Camera altitude for interactive view in meters (default: 1.2e7)
+- `size::Tuple`: Figure size as (width, height) in pixels (default: (500, 500))
+- `return_figure::Bool`: Return figure object instead of displaying (default: false)
+
+# Returns
+- `Figure` if `return_figure=true`, otherwise displays the figure and returns nothing
+"""
 function SpeedyWeather.globe(
     destinations::NTuple{N, <:Destination},
     particle_tracker::Union{Nothing, SpeedyWeather.ParticleTracker}=nothing;
@@ -43,8 +72,9 @@ function SpeedyWeather.globe(
     altitude_tracks = 200_000,
     altitude_destinations = 200_000,
     perspective = (0, 0),
-    altitude = 2e7,
-    size = (800, 800),
+    altitude = 1.2e7,
+    size = (500, 500),
+    return_figure::Bool = false,
 ) where N
 
     perspective = perspective isa Destination ? perspective.lonlat : perspective
@@ -55,22 +85,6 @@ function SpeedyWeather.globe(
 
     if interactive
         ax = GlobeAxis(fig[1, 1]; show_axis = false)
-
-        # starting perspective
-        ecef = GeoMakie.Geodesy.ECEFfromLLA(GeoMakie.wgs84)(
-            GeoMakie.Geodesy.LLA(; 
-            lon = perspective[1], 
-            lat = perspective[2], 
-            alt = altitude,
-        ))
-
-        # Now, we update the camera
-        cc = cameracontrols(ax.scene)
-        cc.eyeposition[] = ecef
-        cc.lookat[] = Vec3d(0,0,0)
-        cc.upvector[] = Vec3d(0,0,1)
-        Makie.update_cam!(ax.scene, cc)
-
     else
         ax = GeoAxis(fig[1, 1],
             dest = "+proj=ortho +lon_0=$(perspective[1]) +lat_0=$(perspective[2])")
@@ -128,11 +142,36 @@ function SpeedyWeather.globe(
     end
 
     # dummy scatter for legend
-    scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle start")
+    !isnothing(particle_tracker) && scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle end")
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=0, colorrange=(0, 1), markersize=16, label="reached")
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=1, colorrange=(0, 1), markersize=16, label="missed")
 
     legend && axislegend(ax, position=:lb)
 
-    fig
-end 
+    if interactive
+
+        # starting perspective
+        ecef = GeoMakie.Geodesy.ECEFfromLLA(GeoMakie.wgs84)(
+            GeoMakie.Geodesy.LLA(; 
+            lon = perspective[1], 
+            lat = perspective[2], 
+            alt = altitude,
+        ))
+
+        # fix to enable altitude kwarg to work
+        Makie.update_state_before_display!(fig)
+
+        # Now, we update the camera
+        cc = cameracontrols(ax.scene)
+        cc.eyeposition[] = ecef
+        cc.lookat[] = Vec3d(0,0,0)
+        cc.upvector[] = Vec3d(0,0,1)
+        Makie.update_cam!(ax.scene, cc)
+    end
+
+    if return_figure
+        return fig
+    else
+        display(fig; update = false)
+    end
+end
