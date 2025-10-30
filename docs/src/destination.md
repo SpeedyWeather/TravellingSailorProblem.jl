@@ -14,7 +14,7 @@ presents to children around the world these are
 
 ```@example destination
 using TravellingSailorProblem
-children = TravellingSailorProblem(26)
+children = TravellingSailorProblem.children(26)
 ```
 
 Their names are in alphabetical order for easier identification when [Visualising destinations](@ref),
@@ -22,7 +22,7 @@ their respective locations are the same for every user of TravellingSailorProble
 You can create fewer destinations which will just pick the first N of those 26, e.g.
 
 ```@example destination
-children = TravellingSailorProblem(5)
+children = TravellingSailorProblem.children(5)
 ```
 
 ## Visualising destinations
