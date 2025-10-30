@@ -58,17 +58,18 @@ evaluate(particle_tracker, children)
 and you'll see something like
 
 ```
-Destination      Gael (  12.0˚E,  57.7˚N) from particle    8:  -1492 points
-Destination     Aarav ( 151.2˚E, -33.9˚N) from particle    3: -51002 points
-Destination     Imran (   3.2˚E,  51.2˚N) from particle    8:  -4664 points
-Destination    Malika ( -58.4˚E, -34.6˚N) from particle   10: -55082 points
-Destination    Hassan ( 121.6˚E,  25.0˚N) from particle    1: -10442 points
-Destination     Maeve (  -1.5˚E,  53.8˚N) from particle    8:  49260 points
-Destination      Emil (  -3.7˚E,  40.4˚N) from particle    1:  -8632 points
-Destination     Priya (   2.4˚E,  48.9˚N) from particle    8:  -6240 points
-Destination     Diego ( -79.4˚E,  43.7˚N) from particle    2:  51132 points
-Destination     Elena (-122.4˚E,  37.8˚N) from particle    1:  -8256 points
-Evaluation: 2/10 reached, -45418 points
+Destination  1    Ana (-157.8˚E,  21.3˚N)  missed by particle  1: -10596 points
+Destination  2   Babu ( 158.7˚E,  53.0˚N)  missed by particle  5:  -6340 points
+Destination  3  Carla ( -74.1˚E,   4.7˚N)  missed by particle  2: -21213 points
+Destination  4  Diego ( 151.2˚E, -33.9˚N)  missed by particle  4:  -2276 points
+Destination  5   Elif (  85.3˚E,  27.7˚N)  missed by particle  1: -10635 points
+Destination  6 Felipe ( 106.9˚E,  47.9˚N)  missed by particle  5: -10691 points
+Destination  7   Gael ( -96.7˚E,  17.1˚N)  missed by particle  5: -25433 points
+Destination  8 Haruko ( 115.9˚E, -31.9˚N) reached by particle  3:  12812 points
+Destination  9   Isla (  -7.6˚E,  33.6˚N)  missed by particle  5: -23549 points
+Destination 10   Jose ( 139.7˚E,  35.7˚N)  missed by particle  5:  -6099 points
+
+Evaluation: 1/10 reached, -104020 points
 ```
 
 Telling you for every child (=destination) the points, how many were reached
