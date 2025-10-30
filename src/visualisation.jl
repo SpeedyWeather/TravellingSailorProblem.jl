@@ -142,7 +142,7 @@ function SpeedyWeather.globe(
     end
 
     # dummy scatter for legend
-    !isnothing(particle_tracker) && scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle end")
+    !isnothing(particle_tracker) && scatter!(ax, 0, 0, -1e6; marker='1', color=:black, markersize=14, label="particle")
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=0, colorrange=(0, 1), markersize=16, label="reached")
     scatter!(ax, 0, 0, -1e6; marker=:hexagon, color=1, colorrange=(0, 1), markersize=16, label="missed")
 
