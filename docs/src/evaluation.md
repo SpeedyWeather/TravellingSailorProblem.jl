@@ -42,7 +42,7 @@ with particles flying as far as possible before reaching a child.
 
 We give
 
-```@example
+```@example evaluation
 TravellingSailorProblem.POINTS_PER_KM_REACHED
 ```
 
@@ -53,7 +53,7 @@ that flew through both the Arctic as well as Antarctica!
 
 However, if a child doesn't get a Christmas present we give
 
-```@example
+```@example evaluation
 TravellingSailorProblem.POINTS_PER_KM_MISSED
 ```
 
