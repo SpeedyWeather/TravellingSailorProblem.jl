@@ -117,10 +117,13 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 # generate globe
                 particle_tracker = dict[:particle_tracker]
                 children = dict[:children]
-                fig = globe(particle_tracker, children)
+                evaluation = dict[:evaluation]
+                MVP = argmax(evaluation.points)
+                fig = globe(particle_tracker, children, perspective=children[MVP])
                 name_without_spaces = replace(name, " " => "_")
-                @info pwd()
-                save("docs/src/submission_$name_without_spaces.png", fig)
+                path = joinpath(@__DIR__, "docs", "src", "submission_$name_without_spaces.png")
+                @info "Saving figure to $path"
+                save(path, fig)
                 println(mdfile, "![submission: $name](submission_$name_without_spaces.png)\n")
             end
         end
@@ -146,7 +149,14 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 layer = dict[:layer]
                 reached = dict[:reached]
                 points = dict[:points]
-                println(mdfile, "| $rank | $author | $description | $layer | $reached/$children | $points |")
+
+                # most valuable player evaluation
+                evaluation = dict[:evaluation]
+                MVPi = argmax(evaluation.points)
+                MVP_name = children[MVPi].name
+                MVP_points = evaluation.points[MVPi] / (2π*SpeedyWeather.DEFAULT_RADIUS/1000)
+                MVP = "$MVP_name ("*@sprintf("%.2f", MVP_points)*")"
+                println(mdfile, "| $rank | $author | $description | $layer | $reached/$children | $MVP | $points |")
             end
         end
     end

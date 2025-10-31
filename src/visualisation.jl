@@ -73,7 +73,7 @@ function SpeedyWeather.globe(
     altitude_shadows = altitude_tracks/10,
     perspective = (30, 30),
     altitude = 1.2e7,
-    size = (500, 500),
+    size = (800, 800),
     return_figure::Bool = false,
 ) where N
 
