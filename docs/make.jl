@@ -119,7 +119,7 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 children = dict[:children]
                 fig = globe(particle_tracker, children)
                 name_without_spaces = replace(name, " " => "_")
-                save("submission_$name_without_spaces.png", fig)
+                save("src/submission_$name_without_spaces.png", fig)
                 println(mdfile, "![submission: $name](submission_$name_without_spaces.png)\n")
             end
         end
