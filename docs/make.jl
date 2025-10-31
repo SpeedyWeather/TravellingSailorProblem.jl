@@ -14,7 +14,7 @@ function run_simulation(nchildren, layer, departures)
     spectral_grid = SpectralGrid(nparticles=nchildren, nlayers=8)
     particle_advection = ParticleAdvection2D(spectral_grid, layer=layer)
     model = PrimitiveWetModel(spectral_grid; particle_advection)
-    simulation = initialize!(model, time=DateTime(2025, 11, 13))
+    simulation = initialize!(model, time=TravellingSailorProblem.DEFAULT_STARTDATE)
 
     # define children and add to the model as destinations
     children = TravellingSailorProblem.children(nchildren)
@@ -31,7 +31,7 @@ function run_simulation(nchildren, layer, departures)
         end
     end
 
-    run!(simulation, period=Day(41))
+    run!(simulation, period=TravellingSailorProblem.DEFAULT_PERIOD)
     return evaluate(particle_tracker, children), particle_tracker, children
 end
 
@@ -70,7 +70,7 @@ for (i, submission) in enumerate(submissions)
     name = split(submission, ".jl")[1]
     path = joinpath(@__DIR__, "..", "submissions", submission)
     all_submissions[name] = run_submission(path)
-    all_points[i] = all_submissions[name]["points"]
+    all_points[i] = all_submissions[name][:points]
     all_names[i] = name
 end
 
@@ -79,7 +79,7 @@ sortargs = sortperm(all_points, rev=true)
 all_names_ranked = all_names[sortargs]
 
 for (i, name) in enumerate(all_names_ranked)
-    all_submissions[name]["rank"] = i
+    all_submissions[name][:rank] = i
 end
 
 # GENERATE SUBMISSIONS LIST
@@ -92,30 +92,30 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
     for i in 1:nsubmissions
         # then find the submission with the given rank
         for (name, dict) in all_submissions
-            rank = dict["rank"]
+            rank = dict[:rank]
             if rank == i
-                author = dict["author"]
-                description = dict["description"]
-                rank = dict["rank"]
+                author = dict[:author]
+                description = dict[:description]
+                rank = dict[:rank]
                 println(mdfile, "## $author: $description\n")
                 println(mdfile, "path: `/submissions/$name.jl`\n")
                 println(mdfile, "rank: $rank. of $nsubmissions submissions\n")
                 
                 # show code
                 println(mdfile, "```julia")
-                println(mdfile, dict["code"])
+                println(mdfile, dict[:code])
                 println(mdfile, "```")
                 println(mdfile, "Evaluation:")
 
                 # visualise evaluation
-                evaluation = dict["evaluation"]
+                evaluation = dict[:evaluation]
                 println(mdfile, "```julia")
                 println(mdfile, evaluation)
                 println(mdfile, "```")
 
                 # generate globe
-                particle_tracker = dict["particle_tracker"]
-                children = dict["children"]
+                particle_tracker = dict[:particle_tracker]
+                children = dict[:children]
                 fig = globe(particle_tracker, children)
                 name_without_spaces = replace(name, " " => "_")
                 save("submission_$name_without_spaces.png", fig)
