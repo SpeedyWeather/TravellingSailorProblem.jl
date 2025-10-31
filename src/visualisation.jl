@@ -108,7 +108,7 @@ function SpeedyWeather.globe(
         for i in eachindex(particles)
             lines!(ax, plon[i, :], plat[i, :], pz[i, :], color=Cycled(i), linewidth=2)
             shadows && lines!(ax, plon[i, :], plat[i, :], pzs[i, :], color=:black, alpha=0.5, linewidth=2)
-            if track_labels
+            if track_labels && (length(particles) < 100)
                 scatter!(ax, plon[i, end], plat[i, end], pz[i, end] * 1.05; color=:black, marker=:circle, markersize=22)
                 
                 if shadows

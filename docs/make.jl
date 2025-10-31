@@ -4,6 +4,7 @@ using Documenter
 using Printf
 using Dates
 using GLMakie
+using Random
 
 DocMeta.setdocmeta!(TravellingSailorProblem, :DocTestSetup, :(using TravellingSailorProblem); recursive=true)
 
@@ -22,7 +23,7 @@ function run_simulation(nchildren, layer, departures)
     add!(model, children)
 
     # define particle tracker and add to the model
-    particle_tracker = ParticleTracker(spectral_grid)
+    particle_tracker = ParticleTracker(spectral_grid, filename="particles_$(randstring(4)).nc")
     add!(model, :particle_tracker => particle_tracker)
 
     (; particles) = simulation.prognostic_variables
