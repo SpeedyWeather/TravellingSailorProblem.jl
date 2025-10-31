@@ -49,7 +49,7 @@ function run_submission(path::String)
         :evaluation => evaluation,
         :particle_tracker => particle_tracker,
         :children => children,
-        :reached => evaluation.nreached,
+        :nreached => evaluation.nreached,
         :points => evaluation.total_points,
         :path => path,
         :code => read(path, String),
@@ -145,9 +145,10 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 # and write the submission as a line to the markdown file
                 author = dict[:author]
                 description = dict[:description]
-                children = dict[:nchildren]
+                children = dict[:children]
+                nchildren = dict[:nchildren]
                 layer = dict[:layer]
-                reached = dict[:reached]
+                nreached = dict[:nreached]
                 points = dict[:points]
 
                 # most valuable player evaluation
@@ -156,7 +157,7 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 MVP_name = children[MVPi].name
                 MVP_points = evaluation.points[MVPi] / (2π*SpeedyWeather.DEFAULT_RADIUS/1000)
                 MVP = "$MVP_name ("*@sprintf("%.2f", MVP_points)*")"
-                println(mdfile, "| $rank | $author | $description | $layer | $reached/$children | $MVP | $points |")
+                println(mdfile, "| $rank | $author | $description | $layer | $nreached/$nchildren | $MVP | $points |")
             end
         end
     end
