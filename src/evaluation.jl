@@ -68,7 +68,7 @@ function evaluate(
             from_particle = destination.closest_particle
         end
 
-        # sum up total points
+        destination.points = points[j]
         name, lon_str, lat_str = destination_format(destination)
         pa_str = @sprintf("%2d", from_particle)
         po_str = @sprintf("%6d", points[j])

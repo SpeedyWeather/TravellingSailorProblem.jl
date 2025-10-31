@@ -14,29 +14,32 @@ export Destination
 A callback structure representing a geographical destination that particles can reach.
 Tracks when particles arrive within a specified radius of the destination. Fields are $(TYPEDFIELDS)"""
 @kwdef mutable struct Destination{NF} <: SpeedyWeather.AbstractCallback
-    "Longitude and latitude coordinates of the destination"
+    "[OPTION] Longitude and latitude coordinates of the destination"
     lonlat::NTuple{2, NF} = rand(PLACES)
 
-    "Name of the destination"
+    "[OPTION] Name of the destination"
     name::Symbol = rand(NAMES)
 
-    "Radius (in meters) around the destination for arrival detection"
+    "[OPTION] Radius (in meters) around the destination for arrival detection"
     radius::NF = DESTINATION_RADIUS
 
-    "Flag indicating whether the destination has been reached"
+    "[OPTION] Whether to print messages when destination is reached"
+	verbose::Bool = isinteractive()
+	
+    "[DERIVED] Flag indicating whether the destination has been reached"
     reached::Bool = false
 
-    "Index of the particle that reached the destination"
+    "[DERIVED] Index of the particle that reached the destination"
     particle::Int = 0
 
-    "Minimum distance from any particle to the destination"
+    "[DERIVED] Minimum distance from any particle to the destination"
     closest_distance::NF = Inf
 
-    "Index of the particle currently closest to the destination"
+    "[DERIVED] Index of the particle currently closest to the destination"
 	closest_particle::Int = 0
 
-    "Whether to print messages when destination is reached"
-	verbose::Bool = isinteractive()
+	"[DERIVED] Points given for this destination (computed during evaluation)"
+	points::Int = 0
 end
 
 """$(TYPEDSIGNATURES)
@@ -111,7 +114,8 @@ end
 Generate a compact string representation of a destination."""
 function shortstring(d::Destination)
 	name, lon, lat = destination_format(d)
-	return "Destination($name, $lon, $lat, reached=$(d.reached))"
+	r = @sprintf("%6s", d.reached)
+	return "Destination($name, $lon, $lat, reached=$r)"
 end
 
 """$(TYPEDSIGNATURES)
@@ -137,4 +141,12 @@ const NF = Float32
 Create a tuple of n destinations with predefined locations and names from PLACES and NAMES."""
 function children(n=NCHILDREN, ::Type{T}=NF; kwargs...) where T
 	return Tuple(Destination{T}(lonlat=PLACES[i], name=NAMES[i]; kwargs...) for i in 1:n)
+end
+
+Base.isless(d1::Destination, d2::Destination) = d1.points < d2.points
+
+# convert a tuple of destinations to a sorted tuple via copy to vector
+function Base.sort(ds::NTuple{N, <:Destination}) where N
+	ds_sorted = sort([ds...])
+	return ntuple(d -> ds_sorted[d], N)
 end

@@ -1,3 +1,4 @@
+"""Predefined names for destinations, sorted alphabetically."""
 const NAMES = [
   :Ana, :Babu, :Carla, :Diego, :Elif, :Felipe, :Gael, :Haruko, :Isla, :Jose,
   :Karim, :Lola, :Maeve, :Noah, :Omar, :Priya, :Quirin, :Rasmus, :Saanvi,
@@ -6,6 +7,7 @@ const NAMES = [
 
 const MAX_NAME_LENGTH = maximum(length.(string.(NAMES)))
 
+"""Predefined places (lon, lat) for destinations."""
 const PLACES = [
   (15.6, 78.2),       # Longyearbyen, Svalbard
   (158.7, 53.0),      # Kamchatka, Russia
@@ -36,7 +38,7 @@ const PLACES = [
 ]
 
 using Random
-const SEED = 1234           # change this for a new challenge
+const SEED = 123      # change this for a new challenge
 const RNG = Random.Xoshiro(SEED)
 
 # shuffle!(RNG, NAMES)      # don't shuffle names to always have A, B, C ...
