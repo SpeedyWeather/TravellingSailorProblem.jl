@@ -135,15 +135,15 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
     for i in 1:nsubmissions
         # then find the submission with the given rank
         for (name, dict) in all_submissions
-            rank = dict["rank"]
+            rank = dict[:rank]
             if rank == i
                 # and write the submission as a line to the markdown file
-                author = dict["author"]
-                description = dict["description"]
-                children = dict["nchildren"]
-                layer = dict["layer"]
-                reached = dict["reached"]
-                points = dict["points"]
+                author = dict[:author]
+                description = dict[:description]
+                children = dict[:nchildren]
+                layer = dict[:layer]
+                reached = dict[:reached]
+                points = dict[:points]
                 println(mdfile, "| $rank | $author | $description | $layer | $reached/$children | $points |")
             end
         end
