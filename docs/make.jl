@@ -10,20 +10,49 @@ DocMeta.setdocmeta!(TravellingSailorProblem, :DocTestSetup, :(using TravellingSa
 submissions = filter(x -> endswith(x, ".jl"), readdir(joinpath(@__DIR__, "../submissions")))
 sort!(submissions)  # alphabetical order
 
+function run_simulation(nchildren, layer, departures)
+    spectral_grid = SpectralGrid(nparticles=nchildren, nlayers=8)
+    particle_advection = ParticleAdvection2D(spectral_grid, layer=layer)
+    model = PrimitiveWetModel(spectral_grid; particle_advection)
+    simulation = initialize!(model, time=DateTime(2025, 11, 13))
+
+    # define children and add to the model as destinations
+    children = TravellingSailorProblem.children(nchildren)
+    add!(model, children)
+
+    # define particle tracker and add to the model
+    particle_tracker = ParticleTracker(spectral_grid)
+    add!(model, :particle_tracker => particle_tracker)
+
+    (; particles) = simulation.prognostic_variables
+    for (i, d) in enumerate(departures)
+        if i <= nchildren
+            particles[i] = mod(Particle(d[1], d[2]))
+        end
+    end
+
+    run!(simulation, period=Day(41))
+    return evaluate(particle_tracker, children), particle_tracker, children
+end
+
 # RUN SUBMISSIONS
 function run_submission(path::String)
     include(path)
+    evaluation, particle_tracker, children = run_simulation(nchildren, layer, departures)
 
     submission_dict = Dict(
-        "author" => name,
-        "description" => description,
-        "nchildren" => nchildren,
-        "layer" => layer,
-        "reached" => 0,
-        "points" => 0,
-        "path" => path,
-        "code" => read(path, String),
-        "rank" => 0,
+        :author => name,
+        :description => description,
+        :nchildren => nchildren,
+        :layer => layer,
+        :evaluation => evaluation,
+        :particle_tracker => particle_tracker,
+        :children => children,
+        :reached => evaluation.nreached,
+        :points => evaluation.total_points,
+        :path => path,
+        :code => read(path, String),
+        :rank => 0,
     )
     return submission_dict
 end
@@ -71,18 +100,26 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 println(mdfile, "## $author: $description\n")
                 println(mdfile, "path: `/submissions/$name.jl`\n")
                 println(mdfile, "rank: $rank. of $nsubmissions submissions\n")
-                println(mdfile, "```@example $name")
-                # println(mdfile, "using CairoMakie # hide")
+                
+                # show code
+                println(mdfile, "```julia")
                 println(mdfile, dict["code"])
-
-                # # translate SKIP_START::Period const to string
-                # period_str = string(typeof(SKIP_START))*"($(SKIP_START.value))"
-
-                # println(mdfile, "RainMaker.plot(rain_gauge, skip=$period_str) # hide")
-                # println(mdfile, """save("submission_$name.png", ans) # hide""")
-                println(mdfile, "nothing # hide")
                 println(mdfile, "```")
-                # println(mdfile, "![submission: $name](submission_$name.png)\n")
+                println(mdfile, "Evaluation:")
+
+                # visualise evaluation
+                evaluation = dict["evaluation"]
+                println(mdfile, "```julia")
+                println(mdfile, evaluation)
+                println(mdfile, "```")
+
+                # generate globe
+                particle_tracker = dict["particle_tracker"]
+                children = dict["children"]
+                fig = globe(particle_tracker, children)
+                name_without_spaces = replace(name, " " => "_")
+                save("submission_$name_without_spaces.png", fig)
+                println(mdfile, "![submission: $name](submission_$name_without_spaces.png)\n")
             end
         end
     end
