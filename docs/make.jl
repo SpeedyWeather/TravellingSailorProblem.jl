@@ -3,6 +3,7 @@ using TravellingSailorProblem
 using Documenter
 using Printf
 using Dates
+using GLMakie
 
 DocMeta.setdocmeta!(TravellingSailorProblem, :DocTestSetup, :(using TravellingSailorProblem); recursive=true)
 
