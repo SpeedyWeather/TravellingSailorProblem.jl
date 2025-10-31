@@ -121,7 +121,7 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 MVP = argmax(evaluation.points)
                 fig = globe(particle_tracker, children, perspective=children[MVP])
                 name_without_spaces = replace(name, " " => "_")
-                path = joinpath(@__DIR__, "docs", "src", "submission_$name_without_spaces.png")
+                path = joinpath(@__DIR__, "src", "submission_$name_without_spaces.png")
                 @info "Saving figure to $path"
                 save(path, fig)
                 println(mdfile, "![submission: $name](submission_$name_without_spaces.png)\n")
