@@ -38,7 +38,7 @@ of points. The aim of the TravellingSailorProblem is to maximize
 the amount of points by reaching as many children as possible
 with particles flying as far as possible before reaching a child.
 
-# Point system
+## Point system
 
 We give
 
@@ -63,3 +63,33 @@ even get near you, you would also be pretty disappointed no?
 This incetivises you to get as close as possible to a child
 and you get less penalised if you barely miss it compared to
 not even trying to fly a present near it!
+
+## Evaluate submission script
+
+In [Submit to the TravellingSailorProblem](@ref) we illustrate a submission
+by using a script `filename.jl` which contains
+
+```@example evaluation
+nchildren = 5   # number of children and particles
+layer = 8       # vertical layer
+departures = [
+    (  5, 0),   # (lon, lat) in degrees, particle 1
+    ( -5, 0),   # particle 2
+    (-15, 0),   # etc
+    (-25, 0),
+    (-35, 0),
+]
+```
+
+You can shortcut the evaluation following the procedure in the
+[TravellingSailorProblem leaderboard](@ref) by doing
+
+```@example evaluation
+particle_tracker, children = run_submission(nchildren=nchildren, layer=layer, departures=departures)
+evaluate(particle_tracker, children)
+```
+
+The first line will use `nchildren`, `layer` and `departures` to run a simulation with the
+default setup and return [Particle tracker](@ref) and `children` (the [Destination](@ref)s).
+The second line will then evaluate those and return points as described in [Evaluation](@ref).
+And based on `particle_tracker` and `children` you can then also [Visualising trajectories](@ref).
