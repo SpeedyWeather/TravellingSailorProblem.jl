@@ -264,7 +264,7 @@ add!(model, :particle_tracker => particle_tracker)
 run!(simulation, period=Day(1))
 
 # visualise
-globe(particle_tracker, perspective=(120, 30))
+globe(particle_tracker, perspective=(120, 30), shadows=false)
 save("many_trajectories.png", ans) # hide
 nothing # hide
 ```
