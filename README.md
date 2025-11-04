@@ -11,6 +11,21 @@ _Sir Francis Drake_
 
 <img width="795" height="791" alt="image" src="https://github.com/user-attachments/assets/47002805-b8ed-4f61-97bf-1dc9812dd179" />
 
+## The Problem
+
+The actual problem is:
+
+> Reach N predefined destinations with particles flying with the wind, launched anywhere on the globe.
+> There will be more points for longer distances particles have flown before reaching their destination
+> but and negative points if they miss it.
+
+So it's only vaguely related to the
+[Travelling Salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem)
+which is about minimizing a path you can choose. Here it's about maximising a path determined
+by the (turbulent) wind field simulated by SpeedyWeather but you can choose the starting point.
+
+See the [Documentation](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/) for more details!
+
 ## Example
 
 ```julia
@@ -72,21 +87,8 @@ Destination 10   Jose ( 139.7˚E,  35.7˚N)  missed by particle  5:  -6099 point
 Evaluation: 1/10 reached, -104020 points
 ```
 
-Telling you for every child (=destination) the points, how many were reached
-in total and the total points. Points are
-
-- For every destination reached: 1 point per km of distance the particle flew before reaching the child.
-- For every destination not reached: -10 points per km of distance to the closest particle came 
-
-So to reach more points you want to
-
-- fly particles as far as possible before reaching a child
-- reach every child not to get minus points but the closer a particle gets the better
-
-to make the optimization easier the evaluation will tell you which particles provided
-points for a given destination. So in the example above 4, 5, 6, 7, and 9 do not
-reach any destination or are the closest to one. So you probably want to let those
-fly differently!
+See [Evaluation](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/evaluation/)
+in the documentation for more details!
 
 ## Visualisation
 
@@ -99,8 +101,19 @@ globe(children, particle_tracker)
 
 and an interactive window will open where you can scroll and zoom. Particle trajectories have different colours
 to distinguish them, destinations reached are in dark purple, destinations not reached in yellow.
+See [Visualising trajectories](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/particles/#Visualising-trajectories)
+for more details!
 
 https://github.com/user-attachments/assets/0c0fb12d-cab5-4a47-b06f-8cf9462450db
+
+## How to submit
+
+See [Submit](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/submit/) in the
+[Documentation](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/)
+
+- [Leaderboard](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/leaderboard/)
+- [List of submissions](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/submissions/)
+- [Instructions](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/instructions/)
 
 ## Installation
 
