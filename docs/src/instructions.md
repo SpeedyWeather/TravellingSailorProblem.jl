@@ -9,8 +9,8 @@ First, get yourself familiar with
 4. and [Visualising trajectories](@ref) so see where things have been blown!
 
 With the information from 3&4 you can then change the number of children/particles,
-and their departure locations or vertical layer to fly on. Then you can repeat
-and find better parameters (departure locations, number of children, layer to fly on)
+and their departure locations (see [Initial conditions](@ref)) or vertical layer to fly on.
+Then you can repeat and find better parameters (departure locations, number of children, layer to fly on)
 to this problem.
 
 ## Tapping in the dark?
@@ -23,14 +23,14 @@ particles will sooner or later diverge, potentially ending up on other sides
 of the globe. But there are also areas where the prevailing wind direction
 is easily predictable and also largely laminar: So two particle stay close
 to another for a long time. Explore the wind field by placing particles
-in various places. See also [Performance Tips](@ref) if you end up placing
-thousands of particles.
+in various places.
 
 ## Strategy 1: Start nearby
 
 With `children = TravellingSailorProblem.children(5)` you know the locations
 of the first 5 (or any really) children. Start your particles close to their
 destinations that will make it much likelier that they reach their destination.
+See [Initial conditions](@ref).
 Combined with the knowledge of where the wind comes from you can then
 reverse engineer where a particle could start from in order to reach the desired
 destination.
@@ -52,7 +52,9 @@ Team work is allowed, share your achievements, that's how open source software w
 
 You can always try to place many particles but then you will also face several problems
 
-- How to create reproducibly many particles evenly across the globe?
+- How to create reproducibly many particles evenly across the globe? (Hint, [Particle seeds](@ref))
 - How to pick the best particles?
-- In the final submission only as many particles as children (max 26) are allowed, not 10 thousand.
+- In the final submission only as many particles as children (max 26) are allowed, not 10000.
 - With too many particles some may reach their destination too late because another particle delivered to a destination first, this does not necessarily maximise points.
+
+See also [Visualising trajectories](@ref) if you end up placing thousands of particles.

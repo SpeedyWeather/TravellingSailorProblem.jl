@@ -14,7 +14,7 @@ the following
 For example such a file could look like
 
 ```julia
-author = "Flying Dutchman and the Ghost"
+name = "Flying Dutchman and the Ghost"
 description = "Five on the equator"
 
 nchildren = 5   # number of children and particles
