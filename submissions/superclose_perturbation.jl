@@ -6,11 +6,11 @@ layer = 5           # [1, 8], 1 is top layer, 8 is surface layer
 
 # Locations (lon, lat) in degrees ˚E, ˚N of the first 10 children
 departures = [
-    (-157.8,  21.3),
-    ( 158.7,  53.0),
-    ( -74.1,   4.7),
-    ( 151.2, -33.9),
-    (  85.3,  27.7),
+    ( -97.1,  49.9),
+    ( 115.0,  -8.7),
+    (  73.5,  -4.6),
+    ( -51.7,  64.2),
+    ( 121.0,  14.6),
 ]
 
 # perturb with std dev of 1 degree
