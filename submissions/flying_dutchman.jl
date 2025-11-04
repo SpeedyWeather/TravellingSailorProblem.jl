@@ -1,4 +1,4 @@
-name = "Flying Dutchman and the Ghost"
+name = "Flying Dutchman"
 description = "Five on the Interstate 10"
 
 nchildren = 5

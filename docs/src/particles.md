@@ -269,3 +269,5 @@ save("many_trajectories.png", ans) # hide
 nothing # hide
 ```
 ![](many_trajectories.png)
+
+But note that this is likely too slow to be interactive unfortunately.

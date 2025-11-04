@@ -1,5 +1,5 @@
-name = "Milan"
-description = "Superclose + random perturbation"
+name = "Peter Pan"
+description = "Westerlies"
 
 nchildren = 5       # [1, 26]
 layer = 5           # [1, 8], 1 is top layer, 8 is surface layer
@@ -13,9 +13,8 @@ departures = [
     ( 121.0,  14.6),
 ]
 
-# perturb with std dev of 1 degree
-σ = 1
+# move all 5 degrees west
 for i in eachindex(departures)
     lon, lat = departures[i]
-    departures[i] = (lon + σ*randn(), lat + σ*randn())
+    departures[i] = (lon - 5, lat)
 end

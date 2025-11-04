@@ -1,4 +1,4 @@
-name = "Milan"
+name = "Jack Sparrow"
 description = "All 26 random"
 
 nchildren = 26      # [1, 26]

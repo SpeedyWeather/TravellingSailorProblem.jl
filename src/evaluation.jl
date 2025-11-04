@@ -89,3 +89,33 @@ function evaluate(
     s = String(take!(io))
     return Evaluation(length(destinations), nreached, total_points, points_int, s)
 end
+
+export run_submission
+function run_submission(;
+    nchildren,
+    layer,
+    departures
+)
+    spectral_grid = SpectralGrid(nparticles=nchildren, nlayers=8)
+    particle_advection = ParticleAdvection2D(spectral_grid, layer=layer)
+    model = PrimitiveWetModel(spectral_grid; particle_advection)
+    simulation = initialize!(model, time=TravellingSailorProblem.DEFAULT_STARTDATE)
+
+    # define children and add to the model as destinations
+    children = TravellingSailorProblem.children(nchildren)
+    add!(model, children)
+
+    # define particle tracker and add to the model
+    particle_tracker = ParticleTracker(spectral_grid)
+    add!(model, :particle_tracker => particle_tracker)
+
+    (; particles) = simulation.prognostic_variables
+    for (i, d) in enumerate(departures)
+        if i <= nchildren
+            particles[i] = mod(Particle(d[1], d[2]))
+        end
+    end
+
+    run!(simulation, period=TravellingSailorProblem.DEFAULT_PERIOD)
+    return particle_tracker, children
+end

@@ -1,4 +1,4 @@
-name = "Milan"
+name = "Blackbeard"
 description = "Way too close!"
 
 nchildren = 10      # [1, 26]
