@@ -37,7 +37,6 @@ using TravellingSailorProblem, GLMakie, GeoMakie
 
 children = TravellingSailorProblem.children(26)
 globe(children)
-globe(children, return_figure=true) # hide
 save("destination26.png", ans) # hide
 nothing # hide
 ```
@@ -53,7 +52,6 @@ using TravellingSailorProblem, GLMakie, GeoMakie
 
 children = TravellingSailorProblem.children(26)
 globe(children, perspective=children[2])
-globe(children, perspective=children[2], return_figure=true) # hide
 save("destination2.png", ans) # hide
 nothing # hide
 ```
@@ -67,7 +65,6 @@ You can also change the altitude, typical values are between 1e6 (country level)
 
 ```@example destination
 globe(children, perspective=(0, 52), altitude=1e6)
-globe(children, perspective=(0, 52), altitude=1e6, return_figure=true) # hide
 save("destination_london.png", ans) # hide
 nothing # hide
 ```

@@ -213,13 +213,12 @@ added to the model
 ```@example particles
 using GLMakie, GeoMakie
 globe(particle_tracker, children)
-globe(particle_tracker, children, return_figure=true) # hide
 save("trajectories1.png", ans) # hide
 nothing # hide
 ```
 ![](trajectories1.png)
 
-### Performance tips
+## Performance tips
 
 You can probably advect thousands to millions of particles without problems,
 but visualising many many particles can get tricky. Here are several arguments to
@@ -236,3 +235,37 @@ the wind is blowing. But note that the initial conditions are unlikely
 representative for the remaining 41 days of a simulation. So
 maybe you want to `run!(simulation, period=Week(1))` before adding
 the particle tracker (or the children)!
+
+## Many particles
+
+Applying the ideas from [Performance tips](@ref) you could for example do
+
+```@example particles
+using SpeedyWeather, TravellingSailorProblem, GLMakie
+
+# create a simulation with 10 particles and particle advection
+spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=10_000)
+particle_advection = ParticleAdvection2D(spectral_grid, layer=8)
+model = PrimitiveWetModel(spectral_grid; particle_advection)
+simulation = initialize!(model, time=DateTime(2025, 11, 13))
+run!(simulation, period=Week(2))    # run for two weeks without tracking
+
+# reset to random particle locations
+(; particles) = simulation.prognostic_variables
+for i in eachindex(particles)
+    particles[i] = rand(Particle)
+end
+
+# add particle tracker
+particle_tracker = ParticleTracker(spectral_grid)
+add!(model, :particle_tracker => particle_tracker)
+
+# now run for a day
+run!(simulation, period=Day(1))
+
+# visualise
+globe(particle_tracker, perspective=(120, 30))
+save("many_trajectories.png", ans) # hide
+nothing # hide
+```
+![](many_trajectories.png)
