@@ -122,7 +122,67 @@ of both `Destination`s (the children) and the particle tracker!
     Otherwise the second will interfere with the netCDF file created
     by the first.
 
+## Initial conditions
 
+When the `model` is initialized it returns a `simulation` which contains that `model`
+as well as variables among which are the particles. We can therefore view those
+particles by
+
+```@example particles
+simulation = initialize!(model)
+(; particles) = simulation.prognostic_variables
+particles
+```
+
+which is a `Vector{Particle{T}}` of some number format `T`. By default these
+particle initial conditions are uniformly random across the globe
+but you can manually choose the initial conditions with
+
+```@example particles
+particles[1] = Particle(-30, 50)  # lon, lat in degrees
+```
+
+You can use both (0, 360˚E) or (-180, 180˚E). Or create a random particle
+
+```@example particles
+particles[2] = rand(Particle)
+```
+
+Or a mix of both
+
+```@example particles
+particles[3] = Particle(-30, 50 + 5*randn())
+```
+
+## Particle seeds
+
+`rand(Particle)` creates a random particle uniformly distributed over the globe
+(not packed towards the poles ...). While this is random, it's not directly
+reproducible. For that one can use a specific random number generator with
+a predefined seed, e.g. the `Xoshiro` random number generator
+
+```@example seed
+using Random, SpeedyWeather
+
+seed = 123
+RNG = Xoshiro(seed)
+rand(RNG, Particle)
+```
+
+places a particle in a location that is different from the next particle
+(following a _random_ sequence)
+
+```@example seed
+rand(RNG, Particle)
+```
+
+but one can always revert to an earlier (or later) point in the sequence
+by reseeding the random number generator
+
+```@example seed
+Random.seed!(RNG, seed)
+rand(RNG, Particle)
+```
 
 ## Visualising trajectories
 
@@ -158,3 +218,21 @@ save("trajectories1.png", ans) # hide
 nothing # hide
 ```
 ![](trajectories1.png)
+
+### Performance tips
+
+You can probably advect thousands to millions of particles without problems,
+but visualising many many particles can get tricky. Here are several arguments to
+`globe` you can provide to speed things up
+
+- `shadows=false`
+- `track_labels=false` (automatically for 100 or more particles)
+- or don't pass on the `children` as destinations, only the `particle_tracker`
+
+It is probably also wise to only visualise shorts tracks even though many,
+i.e. simulate particle tracks for a few days only, not weeks. Visualising
+1000 particles advected for 1 day will give you a good overview of how
+the wind is blowing. But note that the initial conditions are unlikely
+representative for the remaining 41 days of a simulation. So
+maybe you want to `run!(simulation, period=Week(1))` before adding
+the particle tracker (or the children)!
