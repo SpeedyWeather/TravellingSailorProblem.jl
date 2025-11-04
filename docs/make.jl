@@ -159,7 +159,8 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 MVP_points = evaluation.points[MVPi]
 
                 # convert points back to km and scale by Earth's circumference
-                MVP_km = MVP_points >= 0 ? MVP_points / POINTS_PER_KM_REACHED : -MVP_points / POINTS_PER_KM_MISSED
+                MVP_km = MVP_points >= 0 ? MVP_points / abs(TravellingSailorProblem.POINTS_PER_KM_REACHED) :
+                                            MVP_points / abs(TravellingSailorProblem.POINTS_PER_KM_MISSED)
                 MVP_km_scaled = MVP_km / (2π * SpeedyWeather.EARTH_RADIUS)
 
                 MVP = "$MVP_name ("*@sprintf("%.2f", MVP_km_scaled)*")"
