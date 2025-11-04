@@ -74,7 +74,7 @@ function SpeedyWeather.globe(
     perspective = (30, 30),
     altitude = 1.2e7,
     size = (800, 800),
-    return_figure::Bool = false,
+    greyscale_transform = x -> 0.4*x + 0.2
 ) where N
 
     perspective = perspective isa Destination ? perspective.lonlat : perspective
@@ -87,7 +87,7 @@ function SpeedyWeather.globe(
     # background image
     if background
         earth = isfile(joinpath(ASSETS_PATH, "bluemarble.png")) ? load(joinpath(ASSETS_PATH, "bluemarble.png")) : GeoMakie.earth()
-        grey_earth = rotr90(Gray.(earth)) .* 0.6 .+ 0.2
+        grey_earth = greyscale_transform.(rotr90(Gray.(earth)))
         meshimage!(ax, -180..180, -90..90, grey_earth; npoints = 100)
     end
 
