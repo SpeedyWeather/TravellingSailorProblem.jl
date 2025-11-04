@@ -9,7 +9,7 @@
 
 _Sir Francis Drake_
 
-<img width="795" height="791" alt="image" src="https://github.com/user-attachments/assets/e0e24d58-3ece-457c-9e1b-cb44549de808" />
+<img width="795" height="791" alt="image" src="https://github.com/user-attachments/assets/47002805-b8ed-4f61-97bf-1dc9812dd179" />
 
 ## Example
 
@@ -100,7 +100,7 @@ globe(children, particle_tracker)
 and an interactive window will open where you can scroll and zoom. Particle trajectories have different colours
 to distinguish them, destinations reached are in dark purple, destinations not reached in yellow.
 
-https://github.com/user-attachments/assets/8a3ad5e8-2316-46c6-be5f-ffe851305d6c
+https://github.com/user-attachments/assets/0c0fb12d-cab5-4a47-b06f-8cf9462450db
 
 ## Installation
 
