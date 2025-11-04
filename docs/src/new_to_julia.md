@@ -8,7 +8,7 @@ want to use TravellingSailorProblem.jl and SpeedyWeather.jl for education or res
 First of all you have to install Julia, the recommended way is using
 the installation manager for Julia called [Juliaup](https://github.com/JuliaLang/juliaup), see here
 
-- [Install Julia](https://julialang.org/downloads/)
+- [Install Julia](https://julialang.org/install/)
 
 ## Julia kernel for Jupyter notebooks
 

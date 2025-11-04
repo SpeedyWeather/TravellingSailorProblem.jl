@@ -158,3 +158,20 @@ save("trajectories1.png", ans) # hide
 nothing # hide
 ```
 ![](trajectories1.png)
+
+### Performance tips
+
+Visualising many many particles can get tricky, here are several arguments to
+`globe` you can provide to speed things up
+
+- `shadows=false`
+- `track_labels=false` (automatically for 100 or more particles)
+- or don't pass on the `children` as destinations, only the `particle_tracker`
+
+It is probably also wise to only visualise shorts tracks even though many,
+i.e. simulate particle tracks for a few days only, not weeks. Visualising
+1000 particles advected for 1 day will give you a good overview of how
+the wind is blowing. But note that the initial conditions are unlikely
+representative for the remaining 41 days of a simulation. So
+maybe you want to `run!(simulation, period=Week(1))` before adding
+the particle tracker (or the children)!
