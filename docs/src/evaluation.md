@@ -69,7 +69,7 @@ not even trying to fly a present near it!
 In [Submit to the TravellingSailorProblem](@ref) we illustrate a submission
 by using a script `filename.jl` which contains
 
-```@example evaluation
+```@example evaluation2
 nchildren = 5   # number of children and particles
 layer = 8       # vertical layer
 departures = [
@@ -84,7 +84,8 @@ departures = [
 You can shortcut the evaluation following the procedure in the
 [TravellingSailorProblem leaderboard](@ref) by doing
 
-```@example evaluation
+```@example evaluation2
+using TravellingSailorProblem, SpeedyWeather # hide
 particle_tracker, children = run_submission(nchildren=nchildren, layer=layer, departures=departures)
 evaluate(particle_tracker, children)
 ```
