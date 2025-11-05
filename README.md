@@ -13,7 +13,7 @@ _Sir Francis Drake_
 
 ## The Problem
 
-The actual problem is:
+The actual problem to succesfully fly Christmas presents (=particles) to children (=destinations) around the globe following the wind:
 
 > Reach N predefined destinations with particles flying with the wind, launched anywhere on the globe.
 > There will be more points for longer distances particles have flown before reaching their destination
@@ -28,17 +28,19 @@ See the [Documentation](https://speedyweather.github.io/TravellingSailorProblem.
 
 ## Example
 
+Brief example to copy and paste:
+
 ```julia
 using SpeedyWeather, TravellingSailorProblem
 
-# create a simulation with 10 particles and particle advection
-spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=10)
-particle_advection = ParticleAdvection2D(spectral_grid, layer=5)
+# create a simulation for 26 children
+spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=26)
+particle_advection = ParticleAdvection2D(spectral_grid, layer=8)
 model = PrimitiveWetModel(spectral_grid; particle_advection)
 simulation = initialize!(model, time=DateTime(2025, 11, 13))
 
 # add 10 children as destinations
-children = TravellingSailorProblem.children(10)
+children = TravellingSailorProblem.children(26)
 add!(model, children)
 
 # add particle tracker
@@ -47,9 +49,11 @@ add!(model, :particle_tracker => particle_tracker)
 
 # adjust initial locations of particles
 (; particles) = simulation.prognostic_variables
-particles .= rand(Particle, 10)     # all 10 random
+particles .= rand(Particle, 26)     # all 26 random (the default)
 particles[1] = Particle(25, 35)     # or individually 25˚E, 35˚N
 particles[2] = Particle(-120, 55)   # 120˚W, 55˚N
+particles[3:10] .=                  # or several ones along the equator
+  [Particle(lon, 0) for lon in 100:20:240]
 
 # then run! simulation until Christmas
 run!(simulation, period=Day(41))
@@ -87,16 +91,17 @@ Destination 10   Jose ( 139.7˚E,  35.7˚N)  missed by particle  5:  -6099 point
 Evaluation: 1/10 reached, -104020 points
 ```
 
-See [Evaluation](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/evaluation/)
+Summarising your points per child which particle reached them or (barely) missed them
+and the total points. See [Evaluation](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/evaluation/)
 in the documentation for more details!
 
 ## Visualisation
 
-You can visualise tracks and the children's locations via
+After running a simulation you can visualise particle tracks and the children's locations via
 
 ```julia
 using GLMakie
-globe(children, particle_tracker)
+globe(particle_tracker, children)
 ```
 
 and an interactive window will open where you can scroll and zoom. Particle trajectories have different colours
@@ -108,7 +113,8 @@ https://github.com/user-attachments/assets/0c0fb12d-cab5-4a47-b06f-8cf9462450db
 
 ## How to submit
 
-See [Submit](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/submit/) in the
+To submit to the TravellingSailorProblem (automatic evaluation by GitHub actions in the respository) see
+[Submit](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/submit/) in the
 [Documentation](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/)
 
 - [Leaderboard](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/leaderboard/)
