@@ -40,6 +40,7 @@ function evaluate(
     ds = NCDataset(joinpath(particle_tracker.path, particle_tracker.filename))
     lon = ds["lon"][:, :]
     lat = ds["lat"][:, :]
+    close(ds)
     nsteps = size(lon, 2)
     NF = eltype(lon)
 
@@ -83,7 +84,7 @@ function evaluate(
 
         printstyled(io, s; color)
     end
-
+    
     points_int = round.(Int, points)
     total_points = sum(points_int)
     s = String(take!(io))

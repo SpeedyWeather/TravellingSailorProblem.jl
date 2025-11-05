@@ -104,6 +104,7 @@ function SpeedyWeather.globe(
         pz = altitude_tracks .+ zero(plon)
         pzs = altitude_shadows .+ zero(plon)
         particles = ds["particle"][:]
+        close(ds)
 
         for i in eachindex(particles)
             lines!(ax, plon[i, :], plat[i, :], pz[i, :], color=Cycled(i), linewidth=2)
