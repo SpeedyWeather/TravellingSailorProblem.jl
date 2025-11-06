@@ -135,11 +135,11 @@ const NCHILDREN = 10
 
 The default numeric type (Float32) for destination coordinates.
 """
-const NF = Float32
+const DEFAULT_NF = Float32
 
 """$(TYPEDSIGNATURES)
 Create a tuple of n destinations with predefined locations and names from PLACES and NAMES."""
-function children(n=NCHILDREN, ::Type{T}=NF; kwargs...) where T
+function children(n=NCHILDREN, ::Type{T}=DEFAULT_NF; kwargs...) where T
 	return Tuple(Destination{T}(lonlat=PLACES[i], name=NAMES[i]; kwargs...) for i in 1:n)
 end
 

@@ -12,8 +12,8 @@ DocMeta.setdocmeta!(TravellingSailorProblem, :DocTestSetup, :(using TravellingSa
 submissions = filter(x -> endswith(x, ".jl"), readdir(joinpath(@__DIR__, "../submissions")))
 sort!(submissions)  # alphabetical order
 
-function run_simulation(nchildren, layer, departures)
-    spectral_grid = SpectralGrid(nparticles=nchildren, nlayers=8)
+function run_simulation(nchildren, layer, departures, NF=Float32)
+    spectral_grid = SpectralGrid(NF=NF, nparticles=nchildren, nlayers=8)
     particle_advection = ParticleAdvection2D(spectral_grid, layer=layer)
     model = PrimitiveWetModel(spectral_grid; particle_advection)
     simulation = initialize!(model, time=TravellingSailorProblem.DEFAULT_STARTDATE)
@@ -39,8 +39,9 @@ end
 
 # RUN SUBMISSIONS
 function run_submission(path::String)
-    include(path)
-    evaluation, particle_tracker, children = run_simulation(nchildren, layer, departures)
+    NF = TravellingSailorProblem.DEFAULT_NF
+    include(path)   # allow 
+    evaluation, particle_tracker, children = run_simulation(nchildren, layer, departures, NF)
 
     submission_dict = Dict(
         :author => name,
