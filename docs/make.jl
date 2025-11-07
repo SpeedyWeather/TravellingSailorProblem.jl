@@ -12,9 +12,9 @@ DocMeta.setdocmeta!(TravellingSailorProblem, :DocTestSetup, :(using TravellingSa
 submissions = filter(x -> endswith(x, ".jl"), readdir(joinpath(@__DIR__, "../submissions")))
 sort!(submissions)  # alphabetical order
 
-function run_simulation(nchildren, layer, departures, NF=Float32)
+function run_simulation(nchildren, layer, departures, NF=Float32, nsteps=6)
     spectral_grid = SpectralGrid(NF=NF, nparticles=nchildren, nlayers=8)
-    particle_advection = ParticleAdvection2D(spectral_grid, layer=layer)
+    particle_advection = ParticleAdvection2D(spectral_grid, layer=layer, every_n_timesteps=nsteps)
     model = PrimitiveWetModel(spectral_grid; particle_advection)
     simulation = initialize!(model, time=TravellingSailorProblem.DEFAULT_STARTDATE)
 
@@ -23,7 +23,9 @@ function run_simulation(nchildren, layer, departures, NF=Float32)
     add!(model, children)
 
     # define particle tracker and add to the model
-    particle_tracker = ParticleTracker(spectral_grid, filename="particles_$(randstring(4)).nc")
+    nΔt = nsteps * model.time_stepping.Δt_millisec
+    schedule = Schedule(every=nΔt)
+    particle_tracker = ParticleTracker(spectral_grid, filename="particles_$(randstring(4)).nc"; schedule)
     add!(model, :particle_tracker => particle_tracker)
 
     (; particles) = simulation.prognostic_variables
@@ -39,9 +41,11 @@ end
 
 # RUN SUBMISSIONS
 function run_submission(path::String)
-    NF = TravellingSailorProblem.DEFAULT_NF
-    include(path)   # allow 
-    evaluation, particle_tracker, children = run_simulation(nchildren, layer, departures, NF)
+    # set some defaults
+    NF = TravellingSailorProblem.DEFAULT_NF # number format
+    nsteps = 6      # number of model time steps between particle advection/tracking steps
+    include(path)   # defaults can be overwritten in the submission file
+    evaluation, particle_tracker, children = run_simulation(nchildren, layer, departures, NF, nsteps)
 
     submission_dict = Dict(
         :author => name,

@@ -3,6 +3,8 @@ description = "Westerlies"
 
 nchildren = 5       # [1, 26]
 layer = 5           # [1, 8], 1 is top layer, 8 is surface layer
+
+# optional parameter: number format
 NF = Float64
 
 # Locations (lon, lat) in degrees ˚E, ˚N of the first 10 children
