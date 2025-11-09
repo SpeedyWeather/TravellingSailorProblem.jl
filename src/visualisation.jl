@@ -82,7 +82,7 @@ function SpeedyWeather.globe(
     Makie.set_theme!(Attributes(; palette = (; color = Makie.to_colormap(:tab20), patchcolor = Makie.to_colormap(:tab20))))
 
     fig = Figure(size=size);
-    ax = GlobeAxis(fig[1, 1]; show_axis = false)
+    ax = GlobeAxis(fig[1, 1]; show_axis = false, camera_longlat=perspective, camera_altitude=altitude)
 
     # background image
     if background
@@ -153,24 +153,6 @@ function SpeedyWeather.globe(
     if !isnothing(particle_tracker) || !isnothing(destinations)
         legend && axislegend(ax, position=:lb)
     end
-
-    # starting perspective
-    ecef = GeoMakie.Geodesy.ECEFfromLLA(GeoMakie.wgs84)(
-        GeoMakie.Geodesy.LLA(; 
-        lon = perspective[1], 
-        lat = perspective[2], 
-        alt = altitude,
-    ))
-
-    # fix to enable altitude kwarg to work
-    Makie.update_state_before_display!(fig)
-
-    # Now, we update the camera
-    cc = cameracontrols(ax.scene)
-    cc.eyeposition[] = ecef
-    cc.lookat[] = Vec3d(0,0,0)
-    cc.upvector[] = Vec3d(0,0,1)
-    Makie.update_cam!(ax.scene, cc)
 
     return fig
 end
