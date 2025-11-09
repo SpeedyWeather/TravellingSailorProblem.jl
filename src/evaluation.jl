@@ -3,6 +3,7 @@ const DEFAULT_RADIUS = SpeedyWeather.DEFAULT_RADIUS
 
 const POINTS_PER_KM_REACHED = 1     # points per km for reached destinations
 const POINTS_PER_KM_MISSED = -10    # points per km for not reached destinations
+const POINT_FACTOR_AT_SURFACE = 2   # multiplier for points at surface layer
 const DEFAULT_STARTDATE = DateTime(2025, 11, 13)
 const DEFAULT_PERIOD = Day(41)
 
@@ -11,6 +12,7 @@ mutable struct Evaluation
     nreached::Int
     total_points::Int
     points::Vector{Int}
+    distances::Vector{Float32}
     io::String
 end
 
@@ -40,6 +42,7 @@ function evaluate(
     ds = NCDataset(joinpath(particle_tracker.path, particle_tracker.filename))
     lon = ds["lon"][:, :]
     lat = ds["lat"][:, :]
+    σ = ds["sigma"][:, :]
     close(ds)
     nsteps = size(lon, 2)
     NF = eltype(lon)
@@ -47,6 +50,7 @@ function evaluate(
     total_points::Int = 0
     nreached::Int = 0
     points = zeros(length(destinations))
+    distances = similar(points)
     io = IOBuffer()
     
     for (j, destination) in enumerate(destinations)
@@ -63,11 +67,17 @@ function evaluate(
             end
 
             # positive points for reached destinations
-            points[j] = floor(Int, distance_flown/1e3*POINTS_PER_KM_REACHED)
+            distances[j] = distance_flown/1e3  # in km
+
+            # calculate effective distance to have higher points at the surface
+            eff_dist = distances[j] * (1 + (POINT_FACTOR_AT_SURFACE-1)*σ[i, 1])
+            points[j] = floor(Int, eff_dist*POINTS_PER_KM_REACHED)
             from_particle = i
-        else
+        else    # destination missed
+            # negative distances for missed
+            distances[j] = -destination.closest_distance/1e3  # in km
             # negative points for not reached destinations
-            points[j] = floor(Int, destination.closest_distance/1e3*POINTS_PER_KM_MISSED)
+            points[j] = floor(Int, abs(distances[j])*POINTS_PER_KM_MISSED)
             from_particle = destination.closest_particle
         end
 
@@ -88,17 +98,19 @@ function evaluate(
     points_int = round.(Int, points)
     total_points = sum(points_int)
     s = String(take!(io))
-    return Evaluation(length(destinations), nreached, total_points, points_int, s)
+    return Evaluation(length(destinations), nreached, total_points, points_int, distances, s)
 end
 
 export run_submission
 function run_submission(;
     nchildren,
     layer,
-    departures
+    departures,
+    NF=Float32,
+    nsteps=6,
 )
-    spectral_grid = SpectralGrid(nparticles=nchildren, nlayers=8)
-    particle_advection = ParticleAdvection2D(spectral_grid, layer=layer)
+    spectral_grid = SpectralGrid(NF=NF, nparticles=nchildren, nlayers=8)
+    particle_advection = ParticleAdvection2D(spectral_grid, layer=layer, every_n_timesteps=nsteps)
     model = PrimitiveWetModel(spectral_grid; particle_advection)
     simulation = initialize!(model, time=TravellingSailorProblem.DEFAULT_STARTDATE)
 
@@ -107,7 +119,9 @@ function run_submission(;
     add!(model, children)
 
     # define particle tracker and add to the model
-    particle_tracker = ParticleTracker(spectral_grid)
+    nΔt = nsteps * model.time_stepping.Δt_millisec
+    schedule = Schedule(every=nΔt)
+    particle_tracker = ParticleTracker(spectral_grid; schedule)
     add!(model, :particle_tracker => particle_tracker)
 
     (; particles) = simulation.prognostic_variables

@@ -51,6 +51,21 @@ its destination. A child would get more excited the further
 their Christmas present flew? Imagine you get a Christmas present
 that flew through both the Arctic as well as Antarctica!
 
+Additionally, we use
+
+```@example evaluation
+TravellingSailorProblem.POINT_FACTOR_AT_SURFACE
+```
+
+times higher points for particles that flew on the lowermost
+vertical layer compared to the uppermost. This calculation is done in
+[Sigma-coordinates](https://speedyweather.github.io/SpeedyWeatherDocumentation/dev/primitiveequation/#Sigma-coordinates)
+so when choosing `layer=1` (top) one gets 1.0625 points per km flown,
+but on `layer=8` (surface) one gets 1.9375 points per km flown.
+The reason is that the wind is more turbulent
+at the surface but more laminar higher up. To incentivise
+low-flying presents we therefore introduced this point-multiplier.
+
 However, if a child doesn't get a Christmas present we give
 
 ```@example evaluation
@@ -62,7 +77,9 @@ to a child. If you live on Hawai'i and no particle doesn't
 even get near you, you would also be pretty disappointed no?
 This incetivises you to get as close as possible to a child
 and you get less penalised if you barely miss it compared to
-not even trying to fly a present near it!
+not even trying to fly a present near it! Note the
+point mutiplier does not apply for missed children, negative
+points are the same on every vertical layer.
 
 ## Evaluate submission script
 
