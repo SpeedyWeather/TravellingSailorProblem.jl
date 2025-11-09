@@ -124,10 +124,13 @@ function run_submission(;
     particle_tracker = ParticleTracker(spectral_grid; schedule)
     add!(model, :particle_tracker => particle_tracker)
 
+    # prescribe vertical layer
+    σ = model.geometry.σ_levels_full[layer]
+
     (; particles) = simulation.prognostic_variables
     for (i, d) in enumerate(departures)
         if i <= nchildren
-            particles[i] = mod(Particle(d[1], d[2]))
+            particles[i] = mod(Particle(d[1], d[2], σ))
         end
     end
 
