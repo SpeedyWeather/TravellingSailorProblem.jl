@@ -1,7 +1,7 @@
 name = "TravellingSailorProblem"
 uuid = "a3415216-7039-422d-b654-bd7aa2f43b3e"
 authors = ["Milan Kloewer <milankloewer@gmx.de> and contributors"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 ColorVectorSpace = "c3611d14-8923-5661-9e6a-0046d554d3a4"

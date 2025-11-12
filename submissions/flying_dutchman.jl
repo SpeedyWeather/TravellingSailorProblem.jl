@@ -1,12 +1,13 @@
 name = "Flying Dutchman"
-description = "Five on the Interstate 10"
+description = "Big Foot on the Interstate 10"
 
 nchildren = 5
 layer = 1
 
 # optional parameter:
 # number of model time steps between particle advection/tracking steps
-nsteps = 4           
+# fewer (shorter) steps yields smoother trajectories (default 6)
+nsteps = 18       
 
 departures = [
     ( -82, 30),     # (lon, lat) in degrees for particle 1
