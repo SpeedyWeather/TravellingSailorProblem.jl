@@ -1,6 +1,7 @@
 # TravellingSailorProblem.jl
 [![docs](https://img.shields.io/badge/documentation-main-blue.svg)](https://speedyweather.github.io/TravellingSailorProblem.jl/dev/)
 [![Build Status](https://github.com/SpeedyWeather/TravellingSailorProblem.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/SpeedyWeather/TravellingSailorProblem.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17526326.svg)](https://doi.org/10.5281/zenodo.17526326)
 
 [Travelling Salesman problem](https://en.wikipedia.org/wiki/Travelling_salesman_problem) might be NP-hard, this is NP-very hard!
 
