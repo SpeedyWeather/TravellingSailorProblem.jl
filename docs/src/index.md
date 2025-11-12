@@ -36,6 +36,50 @@ And specifically for submitting to the TravellingSailorProblem:
 - [TravellingSailorProblem leaderboard](@ref)
 - [List of submissions](@ref)
 
+## Quick start
+
+After the [Installation](@ref) copy and paste this into your Julia REPL, notebook etc
+
+```julia
+using SpeedyWeather, TravellingSailorProblem
+
+# create a simulation for 26 children
+spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=26)
+particle_advection = ParticleAdvection2D(spectral_grid, layer=8)
+model = PrimitiveWetModel(spectral_grid; particle_advection)
+simulation = initialize!(model, time=DateTime(2025, 11, 13))
+
+# add 10 children as destinations
+children = TravellingSailorProblem.children(26)
+add!(model, children)
+
+# add particle tracker
+particle_tracker = ParticleTracker(spectral_grid)
+add!(model, :particle_tracker => particle_tracker)
+
+# adjust initial locations of particles
+(; particles) = simulation.prognostic_variables
+particles .= rand(Particle, 26)     # all 26 random (the default)
+particles[1] = Particle(25, 35)     # or individually 25˚E, 35˚N
+particles[2] = Particle(-120, 55)   # 120˚W, 55˚N
+particles[3:10] .=                  # or several ones along the equator
+  [Particle(lon, 0) for lon in 100:20:240]
+
+# then run! simulation until Christmas
+run!(simulation, period=Day(41))
+
+# evaluate
+evaluate(particle_tracker, children)
+
+# and visualise
+using GLMakie
+globe(children, particle_tracker)
+```
+
+And you have the basic setup to create a simulation, place particles in it, run, evaluate and visualise.
+Change the particle departures to score higher, see more information in the
+[TravellingSailorProblem instructions](@ref).
+
 ## Installation
 
 First [install Julia](https://julialang.org/install/) via `juliaup` (the recommended default way).

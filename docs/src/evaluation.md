@@ -99,7 +99,7 @@ departures = [
 ```
 
 You can shortcut the evaluation following the procedure in the
-[TravellingSailorProblem leaderboard](@ref) by doing
+[TravellingSailorProblem leaderboard](@ref) by doing after having defined `nchildren`, `layer` and `departures`
 
 ```@example evaluation2
 using TravellingSailorProblem, SpeedyWeather # hide
