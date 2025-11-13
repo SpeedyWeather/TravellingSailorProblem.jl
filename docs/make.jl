@@ -131,10 +131,13 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 fig = globe(particle_tracker, children, perspective=children[MVP])
                 name_without_spaces = replace(name, " " => "_")
                 WGLMakie.Bonito.Page(exportable=true, offline=true) 
-                path = joinpath(@__DIR__, "src", "submission_$name_without_spaces.html")
+                path = joinpath(@__DIR__, "src", "submission_$(name_without_spaces).html")
                 @info "Saving figure to $path"
                 save(path, fig)
-                println(mdfile, "```\n@raw html\n" * read(path, String) * "\n```")
+                println(mdfile, """
+                ```@raw html
+                <iframe width=100% height=auto src="./submission_$(name_without_spaces).html" title="$(name)"/>
+                ```""")
             end
         end
     end
