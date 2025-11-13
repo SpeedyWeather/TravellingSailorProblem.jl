@@ -114,3 +114,21 @@ You can use this software in different ways,
 
 Coming from Python? Have a look at a concise list of
 [noteworthy differences](https://docs.julialang.org/en/v1/manual/noteworthy-differences/#Noteworthy-differences-from-Python).
+
+## Julia Jupyter kernel
+
+To install a Julia kernel for Jupyter notebooks (assuming you already have jupyter notebooks installed) you need
+a package called [IJulia](https://github.com/JuliaLang/IJulia.jl)
+
+```julia
+julia> ] add IJulia
+```
+
+After IJulia is installed do once
+
+```julia
+using IJulia
+installkernel("Julia")
+```
+
+this will add a Julia kernel you can choose among other Python kernels in jupyter lab or jupyter notebooks.
