@@ -2,6 +2,7 @@
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
 GeoMakie = "db073c08-6b98-4ee5-b6a4-5efafb3259c6"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 SpeedyWeather = "9e226e20-d153-4fed-8a5b-493def4f21a9"
