@@ -92,6 +92,7 @@ for (i, name) in enumerate(all_names_ranked)
     all_submissions[name][:rank] = i
 end
 
+WGLMakie.activate!()
 # GENERATE SUBMISSIONS LIST
 @info "Building submissions.md"
 open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
@@ -128,15 +129,15 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 children = dict[:children]
                 evaluation = dict[:evaluation]
                 MVP = argmax(evaluation.points)
+                WGLMakie.Bonito.Page(exportable=true, offline=true) 
                 fig = globe(particle_tracker, children, perspective=children[MVP])
                 name_without_spaces = replace(name, " " => "_")
-                WGLMakie.Bonito.Page(exportable=true, offline=true) 
                 path = joinpath(@__DIR__, "src", "submission_$(name_without_spaces).html")
                 @info "Saving figure to $path"
-                save(path, fig)
+                save(path, fig; offline=true, exportable=true)
                 println(mdfile, """
                 ```@raw html
-                <iframe width=100% height=auto src="./submission_$(name_without_spaces).html" title="$(name)"/>
+                <iframe width=100% height=auto src="../submission_$(name_without_spaces).html" title="$(name)"/>
                 ```""")
             end
         end
