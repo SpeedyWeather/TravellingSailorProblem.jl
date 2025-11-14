@@ -20,7 +20,7 @@ departures = [
             i == 23 ? (lon - 5, lat + 1) :      # Walter
             (lon - 5, lat)                      # default (all others)
 
-        T(newlon, newlat)
+        (newlon, newlat)
     end
     for i in eachindex(children)
 ]
