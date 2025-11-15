@@ -4,6 +4,8 @@ description = "Simple lon-5 with some edge case management. Reaches all children
 nchildren = 26       # [1, 26]
 layer = 2           # [1, 8], 1 is top layer, 8 is surface layer
 
+children = TravellingSailorProblem.children(nchildren)
+
 departures = [
     let (lon, lat) = children[i].lonlat
 
