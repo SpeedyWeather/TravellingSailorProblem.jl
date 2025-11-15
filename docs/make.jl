@@ -3,7 +3,7 @@ using TravellingSailorProblem
 using Documenter
 using Printf
 using Dates
-using GLMakie
+using WGLMakie
 using Random
 
 DocMeta.setdocmeta!(TravellingSailorProblem, :DocTestSetup, :(using TravellingSailorProblem); recursive=true)
@@ -130,10 +130,14 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 MVP = argmax(evaluation.points)
                 fig = globe(particle_tracker, children, perspective=children[MVP])
                 name_without_spaces = replace(name, " " => "_")
-                path = joinpath(@__DIR__, "src", "submission_$name_without_spaces.png")
+                WGLMakie.Bonito.Page(exportable=true, offline=true) 
+                path = joinpath(@__DIR__, "src", "submission_$(name_without_spaces).html")
                 @info "Saving figure to $path"
                 save(path, fig)
-                println(mdfile, "![submission: $name](submission_$name_without_spaces.png)\n")
+                println(mdfile, """
+                ```@raw html
+                <iframe width=100% height=auto src="./submission_$(name_without_spaces).html" title="$(name)"/>
+                ```""")
             end
         end
     end
