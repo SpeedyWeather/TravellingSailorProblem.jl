@@ -137,7 +137,7 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 save(path, fig; offline=true, exportable=true)
                 println(mdfile, """
                 ```@raw html
-                <iframe width=100% height=auto src="../submission_$(name_without_spaces).html" title="$(name)"/>
+                <embed src="../submission_$(name_without_spaces).html" width="80%"/>
                 ```""")
             end
         end
