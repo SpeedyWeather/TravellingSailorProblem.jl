@@ -137,7 +137,7 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 save(path, fig; offline=true, exportable=true)
                 println(mdfile, """
                 ```@raw html
-                <embed src="../submission_$(name_without_spaces).html" width="80%"/>
+                <embed src="../submission_$(name_without_spaces).html" width="80%" aspect-ratio=1/>
                 ```""")
             end
         end
