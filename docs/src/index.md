@@ -36,6 +36,12 @@ And specifically for submitting to the TravellingSailorProblem:
 - [TravellingSailorProblem leaderboard](@ref)
 - [List of submissions](@ref)
 
+Older versions of the documentation correspond to previous challenges used
+for teaching and can be looked up as an archive
+of submissions to the TravellingSailorProblem
+
+- [__TravellingSailorProblem.jl v0.2__: Intelligent Earth CDT, Oxford, November 2025](https://speedyweather.github.io/TravellingSailorProblem.jl/v0.2.0/leaderboard/)
+
 ## Quick start
 
 After the [Installation](@ref) copy and paste this into your Julia REPL, notebook etc
@@ -47,7 +53,7 @@ using SpeedyWeather, TravellingSailorProblem
 spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=26)
 particle_advection = ParticleAdvection2D(spectral_grid, layer=8)
 model = PrimitiveWetModel(spectral_grid; particle_advection)
-simulation = initialize!(model, time=DateTime(2025, 11, 13))
+simulation = initialize!(model, time=DateTime(2026, 11, 14))
 
 # add 10 children as destinations
 children = TravellingSailorProblem.children(26)
@@ -66,7 +72,7 @@ particles[3:10] .=                  # or several ones along the equator
   [Particle(lon, 0) for lon in 100:20:240]
 
 # then run! simulation until Christmas
-run!(simulation, period=Day(41))
+run!(simulation, period=Day(40))
 
 # evaluate
 evaluate(particle_tracker, children)

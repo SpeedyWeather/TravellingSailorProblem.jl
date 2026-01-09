@@ -4,8 +4,8 @@ const DEFAULT_RADIUS = SpeedyWeather.DEFAULT_RADIUS
 const POINTS_PER_KM_REACHED = 1     # points per km for reached destinations
 const POINTS_PER_KM_MISSED = -10    # points per km for not reached destinations
 const POINT_FACTOR_AT_SURFACE = 2   # multiplier for points at surface layer
-const DEFAULT_STARTDATE = DateTime(2025, 11, 13)
-const DEFAULT_PERIOD = Day(41)
+const DEFAULT_STARTDATE = DateTime(2025, 11, 14)
+const DEFAULT_PERIOD = Day(40)
 
 mutable struct Evaluation
     ndestinations::Int

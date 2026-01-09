@@ -38,7 +38,7 @@ using SpeedyWeather, TravellingSailorProblem
 spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=26)
 particle_advection = ParticleAdvection2D(spectral_grid, layer=8)
 model = PrimitiveWetModel(spectral_grid; particle_advection)
-simulation = initialize!(model, time=DateTime(2025, 11, 13))
+simulation = initialize!(model, time=DateTime(2025, 11, 14))
 
 # add 10 children as destinations
 children = TravellingSailorProblem.children(26)
@@ -57,7 +57,7 @@ particles[3:10] .=                  # or several ones along the equator
   [Particle(lon, 0) for lon in 100:20:240]
 
 # then run! simulation until Christmas
-run!(simulation, period=Day(41))
+run!(simulation, period=Day(40))
 
 # evaluate
 evaluate(particle_tracker, children)

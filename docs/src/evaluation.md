@@ -16,7 +16,7 @@ nchildren = 26
 spectral_grid = SpectralGrid(nparticles=nchildren, nlayers=8)
 particle_advection = ParticleAdvection2D(spectral_grid, layer=8)
 model = PrimitiveWetModel(spectral_grid; particle_advection)
-simulation = initialize!(model, time=DateTime(2025, 11, 13))
+simulation = initialize!(model, time=DateTime(2025, 11, 14))
 
 # define children and add to the model as destinations
 children = TravellingSailorProblem.children(nchildren)
@@ -26,7 +26,7 @@ add!(model, children)
 particle_tracker = ParticleTracker(spectral_grid)
 add!(model, :particle_tracker => particle_tracker)
 
-run!(simulation, period=Day(41))
+run!(simulation, period=Day(40))
 
 evaluate(particle_tracker, children)
 ```
