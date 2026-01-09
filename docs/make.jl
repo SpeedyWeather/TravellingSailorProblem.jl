@@ -159,6 +159,7 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
                 layer = dict[:layer]
                 nreached = dict[:nreached]
                 points = dict[:points]
+                path = dict[:path]
 
                 # most valuable player evaluation
                 evaluation = dict[:evaluation]
@@ -171,6 +172,9 @@ open(joinpath(@__DIR__, "src/leaderboard.md"), "w") do mdfile
 
                 MVP = "$MVP_name ("*@sprintf("%.2f", MVP_km_scaled)*")"
                 println(mdfile, "| $rank | $author | $description | $layer | $nreached/$nchildren | $MVP | $points |")
+                
+                # also print into the docs build report
+                @info "$name: rank = $rank, reached = $nreached/$nchildren, points = $points"
             end
         end
     end
