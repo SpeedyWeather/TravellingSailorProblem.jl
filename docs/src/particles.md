@@ -203,7 +203,7 @@ Now we still need to initialize the model to obtain a simulation and run it!
 
 ```@example particles
 simulation = initialize!(model)
-run!(simulation, period=Day(41))
+run!(simulation, period=Day(40))
 ```
 
 After this is complete we can investigate the particle trajectories with
@@ -247,7 +247,7 @@ using SpeedyWeather, TravellingSailorProblem, GLMakie
 spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=10_000)
 particle_advection = ParticleAdvection2D(spectral_grid, layer=8)
 model = PrimitiveWetModel(spectral_grid; particle_advection)
-simulation = initialize!(model, time=DateTime(2025, 11, 13))
+simulation = initialize!(model, time=DateTime(2025, 11, 14))
 run!(simulation, period=Week(2))    # run for two weeks without tracking
 
 # reset to random particle locations

@@ -7,7 +7,7 @@ using Test
     spectral_grid = SpectralGrid(trunc=31, nlayers=8, nparticles=10)
     particle_advection = ParticleAdvection2D(spectral_grid, layer=5)
     model = PrimitiveWetModel(spectral_grid; particle_advection)
-    simulation = initialize!(model, time=DateTime(2025, 11, 13))
+    simulation = initialize!(model, time=DateTime(2025, 11, 14))
 
     # add 10 children as destinations
     children = TravellingSailorProblem.children(10)
@@ -24,7 +24,7 @@ using Test
     particles[2] = Particle(-120, 55)   # 120˚W, 55˚N
 
     # then run! simulation until Christmas
-    run!(simulation, period=Day(41))
+    run!(simulation, period=Day(40))
 
     # evaluate
     e = evaluate(particle_tracker, children)
