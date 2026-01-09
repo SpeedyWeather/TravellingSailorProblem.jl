@@ -38,7 +38,7 @@ And specifically for submitting to the TravellingSailorProblem:
 
 Older versions of the documentation correspond to previous challenges used
 for teaching and can be looked up as an archive
-of submissions to the RainMaker challenge.
+of submissions to the TravellingSailorProblem
 
 - [__TravellingSailorProblem.jl v0.2__: Intelligent Earth CDT, Oxford, November 2025](https://speedyweather.github.io/TravellingSailorProblem.jl/v0.2.0/leaderboard/)
 
