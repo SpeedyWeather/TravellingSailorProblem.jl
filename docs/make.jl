@@ -3,7 +3,7 @@ using TravellingSailorProblem
 using Documenter
 using Printf
 using Dates
-using GLMakie
+using WGLMakie
 using Random
 
 DocMeta.setdocmeta!(TravellingSailorProblem, :DocTestSetup, :(using TravellingSailorProblem); recursive=true)
@@ -92,6 +92,7 @@ for (i, name) in enumerate(all_names_ranked)
     all_submissions[name][:rank] = i
 end
 
+WGLMakie.activate!()
 # GENERATE SUBMISSIONS LIST
 @info "Building submissions.md"
 open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
@@ -128,12 +129,16 @@ open(joinpath(@__DIR__, "src/submissions.md"), "w") do mdfile
                 children = dict[:children]
                 evaluation = dict[:evaluation]
                 MVP = argmax(evaluation.points)
+                WGLMakie.Bonito.Page(exportable=true, offline=true) 
                 fig = globe(particle_tracker, children, perspective=children[MVP])
                 name_without_spaces = replace(name, " " => "_")
-                path = joinpath(@__DIR__, "src", "submission_$name_without_spaces.png")
+                path = joinpath(@__DIR__, "src", "submission_$(name_without_spaces).html")
                 @info "Saving figure to $path"
-                save(path, fig)
-                println(mdfile, "![submission: $name](submission_$name_without_spaces.png)\n")
+                save(path, fig; offline=true, exportable=true)
+                println(mdfile, """
+                ```@raw html
+                <embed src="../submission_$(name_without_spaces).html" width="80%" aspect-ratio=1/>
+                ```""")
             end
         end
     end
