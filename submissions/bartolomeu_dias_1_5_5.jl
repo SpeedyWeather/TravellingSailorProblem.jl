@@ -1,0 +1,13 @@
+name = "Bartolomeu Dias"
+description = "Layer 1, 5deg west, 5 targets"
+
+nchildren = 5
+layer = 1
+
+departures = [
+    (10.6, 78.2),
+    (153.7, 53.0),
+    (-56.7, 64.2),
+    (101.9, 47.9),
+    (-102.1, 49.9),
+]
