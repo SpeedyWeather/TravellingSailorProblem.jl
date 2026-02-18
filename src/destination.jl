@@ -86,11 +86,6 @@ end
 SpeedyWeather.finalize!(::Destination, args...) = nothing
 
 """$(TYPEDSIGNATURES)
-Unpack a tuple of destinations and add each one individually to the target."""
-SpeedyWeather.add!(to, destinations::NTuple{N, <:Destination}) where N = 
-	add!(to, destinations...)
-
-"""$(TYPEDSIGNATURES)
 Add one or more destinations as callbacks to a model."""
 SpeedyWeather.add!(model::AbstractModel, destinations::Destination...) = 
 	add!(model.callbacks, destinations...)
