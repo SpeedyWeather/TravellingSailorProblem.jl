@@ -1,0 +1,13 @@
+name = "Antonio Noli"
+description = "Layer 2, 30deg west, 5 targets"
+
+nchildren = 5
+layer = 2
+
+departures = [
+    (-14.4, 78.2),
+    (128.7, 53.0),
+    (-81.7, 64.2),
+    (76.9, 47.9),
+    (-127.1, 49.9),
+]
